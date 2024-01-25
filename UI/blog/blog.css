@@ -42,10 +42,12 @@
 
 .read_blog_name{
     font-size: 40px;
+    font-family: salsa;
 }
 
 .date{
     margin-left: 2rem;
+    font-weight: bold;
 }
 
 .read_blog_image{
@@ -136,6 +138,114 @@
     font-size: 20px;
     font-weight: bold;
 }
+
+@media only screen and (max-width: 600px) {
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    .navbar_container{
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .logo{
+        width: 4rem;
+        height: auto;
+    }
+
+    .login_blog_button h3{
+        display: none;
+    }
+
+    .login_btn{
+        width: 2rem;
+    }
+
+    #all_blogs_view{
+        padding: 0 1rem;
+    }
+
+    .nav_buttons{
+        margin: 0;
+    }
+
+    .read_blog_name{
+        font-family: salsa;
+        font-size: 40px;
+        text-align: center;
+        margin: 0;
+    }
+    
+    .date{
+        text-align: center;
+        padding: 0;
+
+    }
+
+    .read_blog_image{
+        height: auto;
+    }
+
+    .comment_section{
+        display: flex ;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-bottom: 4rem;
+    }
+    
+    .form input{
+        width:90%;
+    
+    }
+
+    .commentor_details h3{
+      margin: 0;
+      padding: 0;
+    }
+
+    .link_reaction{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .reaction{
+        display: flex;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .reaction .list button{
+        border: none;
+        background-color: #fff;
+    } 
+    
+    .buttons{
+        display: flex;
+        align-items: flex-start;
+        height: 2.5rem;
+    }
+
+    .buttons p{
+        font-size: 20px;
+    }
+    
+    .buttons button{
+        border: none;
+        background-color: #D9D9D9;
+    }
+    
+    .buttons button img{
+        width: 2rem;
+        height: 2rem;
+    }
+}  
+
 
 
 

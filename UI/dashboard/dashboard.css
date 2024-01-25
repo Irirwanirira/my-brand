@@ -33,8 +33,8 @@ body{
 }
 
 .image_container{
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: 50%;
     background-color: grey;
     padding: 0.1rem;
@@ -49,7 +49,6 @@ body{
 .nav_bar_profile{
     display: flex;
     align-items: center;
-    /* justify-content: center; */
     gap: 1rem;
 }
 
@@ -239,3 +238,79 @@ body{
     border: 1px solid #6F0014;
 }
 
+.welcome_view h3 {
+    font-size: 30px;
+}
+
+.welcome_view p{
+    padding-top: 20px;
+}
+
+.welcome_view section{
+    text-align: center;
+    border-radius: 10px;
+    width: 20%;
+    padding: 2rem;
+    margin: auto;
+    box-shadow:  1px 1px 1px 1px;
+    margin-top: 3rem;
+}
+
+.middle_card{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.bottom_card{
+    text-align: center;
+}
+
+@media screen and (max-width: 768px){
+    .dashboard{
+        margin: 0;
+    }
+
+    #nav_bar{
+        padding: 0 2rem;
+    }
+
+    #nav_bar .nav_bar_profile{
+        display: none;
+    }
+    
+
+    #side_nav_bar{
+        display: none;
+    }
+
+    #dashboard_body{
+        grid-column: 1/13;
+    }
+
+    .dashboard_body_header{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search_bar{
+        max-width: 100%;
+    }
+
+    .search_bar input{
+        width: 100%;
+    }
+
+    .table{
+        overflow-x: scroll;
+    }
+
+    .form_section{
+        margin-top: 0;
+    }
+
+    .form_to_fill button{
+        width: 100%;
+    }
+}
