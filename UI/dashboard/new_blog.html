@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="path/to/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&family=Salsa&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./dashboard.css">
     <title>New article</title>
@@ -22,46 +22,38 @@
                 <h3>Admin <span>Joseph</span></h3>
             </div>
             <button>
-                <img src="../../image/Logout Rounded.png" alt="logout button">
+                <a href="../auth/loginpage.html">
+                    <img src="../../image/Logout Rounded.png" alt="logout button">
+                </a>
             </button>
         </header>
         <article id="side_nav_bar">
-            <ul>
+            <ul class="side_nav_bar_ul">
                 <li>
-                    <a href="./dashboard.html">
-                        <img class="image" src="../../image/dashboard.png" alt="dashboard icon">
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="./new_blog.html">
-                        <img class="image" src="../../image/create.png" alt="users icon">
-                        <span>New article</span>
-                    </a>
+                    <a class="list-group-item" href="./dashboard.html"><i class="fa fa-home" aria-hidden="true"></i></i>&nbsp; Dashboard</a>
                 </li>
                 <li>
-                    <a href="./blogs_page.html">
-                        <img class="image" src="../../image/list.png" alt="products icon">
-                        <span>All articles</span>
-                    </a>
+                    <a class="list-group-item" href="./new_blog.html"><i class="fa fa-pencil" aria-hidden="true"></i></i>&nbsp; New article</a>
                 </li>
                 <li>
-                    <a href="./messages_page.html">
-                        <img class="image" src="../../image/message.png" alt="messages icon">
-                        <span>Messages</span>
-                    </a>
+                    <a class="list-group-item" href="./blogs_page.html"><i class="fa fa-book" aria-hidden="true"></i></i>&nbsp; All articles</a>
+                </li>
+               
+                <li>
+                    <a class="list-group-item" href="./messages_page.html"><i class="fa fa-envelope-o" aria-hidden="true"></i></i>&nbsp; Messages</a>
                 </li>
                 <li>
-                    <a href="./users_page.html">
-                        <img class="image" src="../../image/Users.png" alt="orders icon">
-                        <span>Users</span>
-                    </a>
+                    <a class="list-group-item" href="./users_page.html"><i class="fa fa-users" aria-hidden="true"></i></i>&nbsp; Users</a>
                 </li>
             </ul>
            
         </article>
         <section id="dashboard_body">
+            <div class="nav_menu">
+                <button>
+                    <img src="../../image/navMenu.png" alt="">
+                </button>
+            </div>
             <div class="dashboard_body_header">
                 <h1>Write new Article</h1>
             </div>

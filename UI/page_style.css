@@ -12,7 +12,7 @@ body{
     background-color: #fff;
     background-color: #fff;
     width: 100%;
-  background-color: #fff;
+    background-color: #fff;
     width: 100%;
 }
 
@@ -700,4 +700,12 @@ body{
 
 
 
+}
+
+@media only screen and (min-width: 601px) and (max-width: 968px) {
+
+    body{
+        
+    }
+    
 }
