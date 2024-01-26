@@ -6,7 +6,7 @@
     /* height: 90%; */
     height: max-content;
     align-items: flex-end;
-    margin: 10rem;
+    margin: 10rem 0;
 }
 
 .login_form_container{
@@ -55,3 +55,44 @@
     color: #6F0014;
     text-decoration: none;
 }
+
+@media only screen and (max-width: 600px) {
+
+    body{
+        margin: 0;
+        padding: 0;
+    };
+
+    #login_view{
+        margin: 0;
+    }
+
+    .login_form_container{
+        width: 80%
+    }
+
+    .user_login_form{
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 968px) {
+
+    body{
+        margin: 0;
+        padding: 0;
+    }
+
+    section{
+        margin: 0;
+        padding: 0;
+    }
+
+    .login_form_container{
+        width: 50%
+    }
+
+}
+
