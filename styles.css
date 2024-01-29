@@ -703,3 +703,107 @@ body{
 }
 
 
+/* @media only screen and (min-width: 601px) and (max-width: 960px) { */
+    /* body{
+        margin: 0;
+        padding: 0;
+    }
+    .navbar_container{
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .logo{
+        width: 4rem;
+        height: auto;
+    }
+
+    .nav_list{
+        position: absolute;
+        /* height: 90vh; */
+        /* width: 100%;
+        background-color: #fff;
+        top: 8vh;
+        /* left: 0%; */
+        /* text-align: center;
+        display: block;
+        transition: all 0.5s ease; */
+    /* }  */
+
+    /* .nav_list li{ */
+        /* display: block; */
+        /* margin: 50px 0; */
+        /* line-height: 30px; */
+    /* } */
+
+    /* .nav_list li a{
+        font-size: 20px;
+    }
+
+    .menu_container{
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(-100%, 75%);
+        font-size: 1.8rem;
+        cursor: pointer;
+    }
+
+    #home_view{
+        display: flex;
+    }
+
+    .home_picture_container{
+        display: none;
+    } */
+
+    /* .introduction{
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center ;
+    }
+
+    
+
+    .introduction h1{
+        font-family: salsa;
+        font-size: 20px;
+        font-weight: bolder;
+    } */
+
+    /* .introduction h2{
+        font-family: salsa;
+        font-size: 30px;
+        color: #6F0014;
+        font-weight: 500;
+    }
+
+    .slogan{
+        display: flex;
+        flex-direction: column;
+        font-family: salsa;
+        font-size: 30px;
+        font-weight: 500;
+    }
+
+    .introduction button{
+        align-self: center;
+    } */
+/* 
+    #about_view{
+        padding: 0;
+        padding: 0;
+    }
+
+    .about_section{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    } 
+} */
