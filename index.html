@@ -16,7 +16,7 @@
                 <img class="logo" title="Logo" src="./image/logo.png" alt="">
             </div>
             <nav class="nav_bar">
-                <ul class="nav_list">
+                <ul id="nav_list">
                     <li title="Home"><a href="#home_view">Home</a></li>
                     <li title="About"><a href="#about_view">About</a></li> 
                     <li title="Skills"><a href="#skills_section">Skills</a></li>
@@ -26,7 +26,7 @@
                 </ul>
             </nav>
             <div class="menu_container">
-                <img title="Menu" src="./image/homepicture.png" alt="">
+                <img id="menu_btn" title="Menu" src="./image/navMenu.png" alt="">
             </div>
         </div>
     </header>
@@ -314,19 +314,21 @@
                     <a href="">Download my CV</a>
                 </button>
             </div>
-            <form  class="contact_form" action="">
-                <input type="text" placeholder="Name">
-                <input type="text" placeholder="Email">
-                <textarea name="" id="" cols="0" placeholder="Enter your message"></textarea>
-                <button title="Get in touch " id="action_btn">
-                    <a href="#contact_view">Submit</a>
-                </button>
+            <form  class="contact_form" action="submit" id="form">
+                <input id="name_input" type="text" name="name" placeholder="Name" autocomplete="true">
+                <span id="nameError"></span>
+                <input id="email_input" type="text" name="email" placeholder="example@gmail.com" autocomplete="">
+                <span id="emailError"></span>
+                <textarea id="message_text" name="textContent" id="" cols="0" placeholder="Enter your message"></textarea>
+                <span id="messageError"></span>
+                <button class="" title="Get in touch " id="action_btn">Submit</button>
+                <span id="validForm"></span>
             </form>
         </div>
     </section>
     <footer>
         <p class="copy_right">© 2024 Joseph Irirwanirira. All rights reserved.</p>
     </footer>
-
+    <script type="module" src="./script.js" defer></script>
 </body>
 </html>

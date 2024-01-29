@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&family=Salsa&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../styles.css">
 <link rel="stylesheet" href="./auth.css">
-
     <title>Login page</title>
 </head>
 <body>
@@ -18,7 +17,7 @@
                 <img title="Logo" src="../../image/logo.png" alt="">
             </div>
             <nav class="nav_bar">
-                <ul class="nav_list">
+                <ul id="nav_list">
                     <li title="Home"><a href="#home_view">Home</a></li>
                     <li title="About"><a href="#about_view">About</a></li> 
                     <li title="Skills"><a href="#skills_section">Skills</a></li>
@@ -27,6 +26,9 @@
                     <li title="Contact"><a href="#contact_view">Contact</a></li>
                 </ul>
             </nav>
+            <div class="menu_container">
+                <img id="menu_btn" title="Menu" src="../../image/navMenu.png" alt="">
+            </div>
         </div>
     </header>
     <section id="login_view">
@@ -42,5 +44,6 @@
             <p class="signup_notification">Not a member?<span><a href="./signuppage.html"> Sign Up</a></span></p>
         </div>
     </section>
+    <script type="module" src="./auth.js"></script>
 </body>
 </html>
