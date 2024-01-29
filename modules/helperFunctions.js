@@ -14,6 +14,4 @@ export function retrieveMsg(){
         return []
     }
 }
-// const retrievedMsg = retrieveMsg()
-// export default retrievedMsg
 

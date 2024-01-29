@@ -1,8 +1,17 @@
+import { toggleNavBar } from "../../modules/helperFunctions.js";
 import { retrieveMsg } from "../../modules/helperFunctions.js";
 const messagesContainer = document.getElementById("dashboard_message");
-const headerSection = document.getElementById('nav_bar')
-const sideNavBar = document.getElementById('side_nav_bar')
+const headerSection = document.getElementById("nav_bar");
+const sideNavBar = document.getElementById("side_nav_bar");
 
+const toggleBtn = document.querySelector(".nav_menu");
+toggleBtn.addEventListener("click", () => {
+  toggleNavBar(sideNavBar);
+});
+
+sideNavBar.addEventListener("click", () => {
+  toggleNavBar(sideNavBar);
+});
 
 headerSection.innerHTML = `
     <div class="box" id="logo">
@@ -19,8 +28,7 @@ headerSection.innerHTML = `
         <img src="../../image/Logout Rounded.png" alt="logout button">
     </a>
     </button>
-`
-
+`;
 
 sideNavBar.innerHTML = `
     <ul class="side_nav_bar_ul">
@@ -41,13 +49,13 @@ sideNavBar.innerHTML = `
         <a class="list-group-item" href="./users_page.html"><i class="fa fa-users" aria-hidden="true"></i></i>&nbsp; Users</a>
     </li>
     </ul>
-`
+`;
 
-const messages = retrieveMsg()
+const messages = retrieveMsg();
 
-function displayMsg(){
-    messages.forEach((message) => {
-        messagesContainer.innerHTML += `
+function displayMsg() {
+  messages.forEach((message) => {
+    messagesContainer.innerHTML += `
             <tr>
                 <td>${message.names}</td>
                 <td>${message.email}</td>
@@ -60,51 +68,8 @@ function displayMsg(){
                     </button>
                 </td>
             </tr>
-    `});
+    `;
+  });
 }
 
-window.addEventListener('DOMContentLoaded', displayMsg)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // messages.forEach((message) => {
-    //     messagesContainer.innerHTML += `
-    //         <tr>
-    //             <td>1</td>
-    //             <td>${message.names}</td>
-    //             <td>${message.email}</td>
-    //             <td>${message.message}</td>
-    //             <td>
-    //                 <button>Delete</button>
-    //             </td>
-    //         </tr>
-    // `});
-
-
-// const message = {
-//     id: messages.length + 1,
-//     names: nameInputField.value,
-//     email: emailInputField.value,
-//     message: messageField.value,
-//     time: new Date().toTimeString(),
-//     date: new Date().toDateString()
-// };
+window.addEventListener("DOMContentLoaded", displayMsg);
