@@ -23,14 +23,18 @@
                 <h1>Write new Article</h1>
             </div>
             <div class="form_section">
-                <form class="form_to_fill" action="">
-                    <label for="">Title</label>
-                    <input type="text">
-                    <label for="">Upload image</label>
-                    <input type="photo">
-                    <label for=""> Description</label>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                <form class="form_to_fill" id="form" action="submit">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title">
+                    <span id="titleError"></span>
+                    <label for="photo">Upload image</label>
+                    <input type="file" accept="image/*" name="photo" id="photo">
+                    <span id="imageError"></span>
+                    <label for="description"> Description</label>
+                    <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                    <span id="descriptionError"></span>
                     <button>Post</button>
+                    <span id="successMsg"></span>
                 </form>
             <div>
         </section>
