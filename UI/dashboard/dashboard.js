@@ -1,8 +1,19 @@
-import { toggleNavBar } from "../../modules/helperFunctions.js";
-import { retrieveMsg } from "../../modules/helperFunctions.js";
+// import { toggleNavBar } from "../../modules/helperFunctions.js";
+import {
+  retrieveFromStore,
+  toggleNavBar,
+  saveLocally,
+} from "../../modules/helperFunctions.js";
 const messagesContainer = document.getElementById("dashboard_message");
 const headerSection = document.getElementById("nav_bar");
 const sideNavBar = document.getElementById("side_nav_bar");
+const form = document.querySelector("#form");
+
+const blogContainer = document.getElementById("article_container");
+
+const title = document.querySelector("#title");
+const photo = document.querySelector("#photo");
+const description = document.querySelector("#description");
 
 const toggleBtn = document.querySelector(".nav_menu");
 toggleBtn.addEventListener("click", () => {
@@ -51,7 +62,7 @@ sideNavBar.innerHTML = `
     </ul>
 `;
 
-const messages = retrieveMsg();
+const messages = retrieveFromStore("messages");
 
 function displayMsg() {
   messages.forEach((message) => {
@@ -72,4 +83,142 @@ function displayMsg() {
   });
 }
 
-window.addEventListener("DOMContentLoaded", displayMsg);
+let blogs = [];
+let blog;
+
+const clearInput = () => {
+  title.value = "";
+  photo.value = "";
+  description.value = "";
+};
+
+function storeBlogs() {
+  let date = new Date();
+  if (title.value && photo.value && description.value) {
+    blog = {
+      id: blogs.length + 1,
+      title: title.value,
+      photo: photo.value,
+      description: description.value,
+      Date: date.toDateString(),
+    };
+    blogs.unshift(blog);
+    saveLocally(blogs, "blogs");
+  } else {
+    console.log("Please fill in all the fields.");
+  }
+}
+
+let localBlogs = retrieveFromStore("blogs");
+
+function displayArticles() {
+  localBlogs.forEach((blog) => {
+    blogContainer.innerHTML += `
+              <tr>
+                  <td>${blog.title}</td>
+                  <td>Young Spartan</td>
+                  <td>${blog.Date}</td>
+                  <td class="action">
+                        <button>
+                        <img src="../../image/Eye.png" alt="delete icon">
+                        </button>
+                        <button>
+                            <img src="../../image/Create.png" alt="delete icon">
+                        </button>
+                        <button>
+                            <img src="../../image/Remove.png" alt="delete icon">
+                        </button>
+                  </td>
+              </tr>
+      `;
+  });
+}
+const dashboardContainer = document.querySelector(".welcome_view");
+
+function displayWelcome() {
+  dashboardContainer.innerHTML += `
+        <section class="top_card">
+            <h3>messages</h3>
+            <p>${messages.length}</p>
+        </section>
+        <div class="middle_card"> 
+            <section class="left_card">
+                <h3>All Articles</h3>
+                <p>${localBlogs.length}</p>
+            </section>
+            <section class="right_card">
+                <h3>All Users</h3>
+                <p>5</p>
+            </section>
+        </div>
+        <section class="bottom_card">
+            <h3>Comments</h3>
+            <p>30</p>
+        </section>`;
+}
+
+window.addEventListener("DOMContentLoaded", function () {
+  if (messagesContainer) {
+    displayMsg();
+  }
+  if (blogContainer) {
+    displayArticles();
+  }
+  if (dashboardContainer) {
+    displayWelcome();
+  }
+});
+
+function validateBlogForm(e) {
+  e.preventDefault();
+
+  let titleField = description.value;
+  let photoField = photo.value;
+  let descriptionField = description.value;
+
+  const titleErr = document.getElementById("titleError");
+  const imageErr = document.getElementById("imageError");
+  const descrErr = document.getElementById("descriptionError");
+
+  const validMsg = document.getElementById("successMsg");
+
+  if (titleField === "") {
+    titleErr.textContent = "Title is required";
+    titleErr.style.color = "red";
+    title.focus();
+    return false;
+  } else {
+    titleErr.textContent = "";
+  }
+
+  if (photoField === "") {
+    imageErr.textContent = "Image is required";
+    imageErr.style.color = "red";
+    photo.focus();
+    return false;
+  } else {
+    imageErr.textContent = "";
+  }
+
+  if (descriptionField === "") {
+    descrErr.textContent = "Description is required";
+    descrErr.style.color = "red";
+    description.focus();
+    return false;
+  } else {
+    descrErr.textContent = "";
+  }
+
+  validMsg.textContent = "Blog added successfully";
+  validMsg.style.cssText = `
+    display: block; 
+    color: green;
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px;
+    animation: fadeOut 5s ease-in-out forwards;
+    box-shadow:  1px 1px 1px 1px; `;
+  storeBlogs();
+  clearInput();
+}
+form.addEventListener("submit", validateBlogForm);
