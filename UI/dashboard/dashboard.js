@@ -1,30 +1,36 @@
-// import { toggleNavBar } from "../../modules/helperFunctions.js";
 import {
   retrieveFromStore,
   toggleNavBar,
   saveLocally,
+  logout,
 } from "../../modules/helperFunctions.js";
-const messagesContainer = document.getElementById("dashboard_message");
-const headerSection = document.getElementById("nav_bar");
-const sideNavBar = document.getElementById("side_nav_bar");
-const form = document.querySelector("#form");
 
-const blogContainer = document.getElementById("article_container");
+const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
-const title = document.querySelector("#title");
-const photo = document.querySelector("#photo");
-const description = document.querySelector("#description");
+if (!loggedInUser) {
+  window.location.href = "../auth/loginpage.html";
+} else {
+  const messagesContainer = document.getElementById("dashboard_message");
+  const headerSection = document.getElementById("nav_bar");
+  const sideNavBar = document.getElementById("side_nav_bar");
+  const form = document.querySelector("#form");
 
-const toggleBtn = document.querySelector(".nav_menu");
-toggleBtn.addEventListener("click", () => {
-  toggleNavBar(sideNavBar);
-});
+  const blogContainer = document.getElementById("article_container");
 
-sideNavBar.addEventListener("click", () => {
-  toggleNavBar(sideNavBar);
-});
+  const title = document.querySelector("#title");
+  const photo = document.querySelector("#photo");
+  const description = document.querySelector("#description");
 
-headerSection.innerHTML = `
+  const toggleBtn = document.querySelector(".nav_menu");
+  toggleBtn.addEventListener("click", () => {
+    toggleNavBar(sideNavBar);
+  });
+
+  sideNavBar.addEventListener("click", () => {
+    toggleNavBar(sideNavBar);
+  });
+
+  headerSection.innerHTML = `
     <div class="box" id="logo">
     <img src="../../image/logo.png" alt="logo">
     </div>
@@ -32,16 +38,17 @@ headerSection.innerHTML = `
     <div class="image_container">
         <img src="../../image/aboutPicture.png" alt="profile">
     </div>
-    <h3>Admin <span>Joseph</span></h3>
+    <h3>Admin <span>${loggedInUser.username}</span></h3>
     </div>
-    <button>
-    <a href="../auth/loginpage.html">
+    <button id="logoutBtn">
         <img src="../../image/Logout Rounded.png" alt="logout button">
-    </a>
     </button>
 `;
 
-sideNavBar.innerHTML = `
+  const logoutBtn = document.getElementById("logoutBtn");
+  logoutBtn.addEventListener("click", logout);
+
+  sideNavBar.innerHTML = `
     <ul class="side_nav_bar_ul">
     <li>
         <a class="list-group-item" href="./dashboard.html"><i class="fa fa-home" aria-hidden="true"></i></i>&nbsp; Dashboard</a>
@@ -62,11 +69,11 @@ sideNavBar.innerHTML = `
     </ul>
 `;
 
-const messages = retrieveFromStore("messages");
+  const messages = retrieveFromStore("messages");
 
-function displayMsg() {
-  messages.forEach((message) => {
-    messagesContainer.innerHTML += `
+  function displayMsg() {
+    messages.forEach((message) => {
+      messagesContainer.innerHTML += `
             <tr>
                 <td>${message.names}</td>
                 <td>${message.email}</td>
@@ -80,40 +87,40 @@ function displayMsg() {
                 </td>
             </tr>
     `;
-  });
-}
-
-let blogs = [];
-let blog;
-
-const clearInput = () => {
-  title.value = "";
-  photo.value = "";
-  description.value = "";
-};
-
-function storeBlogs() {
-  let date = new Date();
-  if (title.value && photo.value && description.value) {
-    blog = {
-      id: blogs.length + 1,
-      title: title.value,
-      photo: photo.value,
-      description: description.value,
-      Date: date.toDateString(),
-    };
-    blogs.unshift(blog);
-    saveLocally(blogs, "blogs");
-  } else {
-    console.log("Please fill in all the fields.");
+    });
   }
-}
 
-let localBlogs = retrieveFromStore("blogs");
+  let blogs = [];
+  let blog;
 
-function displayArticles() {
-  localBlogs.forEach((blog) => {
-    blogContainer.innerHTML += `
+  const clearInput = () => {
+    title.value = "";
+    photo.value = "";
+    description.value = "";
+  };
+
+  function storeBlogs() {
+    let date = new Date();
+    if (title.value && photo.value && description.value) {
+      blog = {
+        id: blogs.length + 1,
+        title: title.value,
+        photo: photo.value,
+        description: description.value,
+        Date: date.toDateString(),
+      };
+      blogs.unshift(blog);
+      saveLocally(blogs, "blogs");
+    } else {
+      console.log("Please fill in all the fields.");
+    }
+  }
+
+  let localBlogs = retrieveFromStore("blogs");
+
+  function displayArticles() {
+    localBlogs.forEach((blog) => {
+      blogContainer.innerHTML += `
               <tr>
                   <td>${blog.title}</td>
                   <td>Young Spartan</td>
@@ -131,12 +138,12 @@ function displayArticles() {
                   </td>
               </tr>
       `;
-  });
-}
-const dashboardContainer = document.querySelector(".welcome_view");
+    });
+  }
+  const dashboardContainer = document.querySelector(".welcome_view");
 
-function displayWelcome() {
-  dashboardContainer.innerHTML += `
+  function displayWelcome() {
+    dashboardContainer.innerHTML += `
         <section class="top_card">
             <h3>messages</h3>
             <p>${messages.length}</p>
@@ -155,62 +162,62 @@ function displayWelcome() {
             <h3>Comments</h3>
             <p>30</p>
         </section>`;
-}
-
-window.addEventListener("DOMContentLoaded", function () {
-  if (messagesContainer) {
-    displayMsg();
-  }
-  if (blogContainer) {
-    displayArticles();
-  }
-  if (dashboardContainer) {
-    displayWelcome();
-  }
-});
-
-function validateBlogForm(e) {
-  e.preventDefault();
-
-  let titleField = description.value;
-  let photoField = photo.value;
-  let descriptionField = description.value;
-
-  const titleErr = document.getElementById("titleError");
-  const imageErr = document.getElementById("imageError");
-  const descrErr = document.getElementById("descriptionError");
-
-  const validMsg = document.getElementById("successMsg");
-
-  if (titleField === "") {
-    titleErr.textContent = "Title is required";
-    titleErr.style.color = "red";
-    title.focus();
-    return false;
-  } else {
-    titleErr.textContent = "";
   }
 
-  if (photoField === "") {
-    imageErr.textContent = "Image is required";
-    imageErr.style.color = "red";
-    photo.focus();
-    return false;
-  } else {
-    imageErr.textContent = "";
-  }
+  window.addEventListener("DOMContentLoaded", function () {
+    if (messagesContainer) {
+      displayMsg();
+    }
+    if (blogContainer) {
+      displayArticles();
+    }
+    if (dashboardContainer) {
+      displayWelcome();
+    }
+  });
 
-  if (descriptionField === "") {
-    descrErr.textContent = "Description is required";
-    descrErr.style.color = "red";
-    description.focus();
-    return false;
-  } else {
-    descrErr.textContent = "";
-  }
+  function validateBlogForm(e) {
+    e.preventDefault();
 
-  validMsg.textContent = "Blog added successfully";
-  validMsg.style.cssText = `
+    let titleField = description.value;
+    let photoField = photo.value;
+    let descriptionField = description.value;
+
+    const titleErr = document.getElementById("titleError");
+    const imageErr = document.getElementById("imageError");
+    const descrErr = document.getElementById("descriptionError");
+
+    const validMsg = document.getElementById("successMsg");
+
+    if (titleField === "") {
+      titleErr.textContent = "Title is required";
+      titleErr.style.color = "red";
+      title.focus();
+      return false;
+    } else {
+      titleErr.textContent = "";
+    }
+
+    if (photoField === "") {
+      imageErr.textContent = "Image is required";
+      imageErr.style.color = "red";
+      photo.focus();
+      return false;
+    } else {
+      imageErr.textContent = "";
+    }
+
+    if (descriptionField === "") {
+      descrErr.textContent = "Description is required";
+      descrErr.style.color = "red";
+      description.focus();
+      return false;
+    } else {
+      descrErr.textContent = "";
+    }
+
+    validMsg.textContent = "Blog added successfully";
+    validMsg.style.cssText = `
     display: block; 
     color: green;
     text-align: center;
@@ -218,7 +225,8 @@ function validateBlogForm(e) {
     padding: 10px;
     animation: fadeOut 5s ease-in-out forwards;
     box-shadow:  1px 1px 1px 1px; `;
-  storeBlogs();
-  clearInput();
+    storeBlogs();
+    clearInput();
+  }
+  form.addEventListener("submit", validateBlogForm);
 }
-form.addEventListener("submit", validateBlogForm);
