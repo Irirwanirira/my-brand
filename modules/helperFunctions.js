@@ -29,56 +29,55 @@ export function logout(){
 const projects = [
   {
     id: 1,
-    name: "Car rental",
+    name: "Expense Tracker",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+      "Expense Tracker is a user-friendly app that helps you track your expenses and income.",
     image: "./image/car_rental.png",
-    link: "https://car-rental-website.netlify.app/",
+    link: "https://expense-tracker-ochre-ten.vercel.app/",
   },
   {
     id: 2,
-    name: "Car rental",
+    name: "Space Traveler",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+      "This is a react project that renders rocket data as well as mission data from an API onto the UI.",
     image: "./image/car_rental.png",
-    link: "https://car-rental-website.netlify.app/",
+    link: "https://space-x-project1.netlify.app/",
   },
   {
     id: 3,
-    name: "Car rental",
+    name: "Netflix Clone",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+      "This app shows movies from TMD, but requires users to register and log in.",
     image: "./image/car_rental.png",
-    link: "https://car-rental-website.netlify.app/",
+    link: "https://i-joseph-dev.netlify.app/",
   },
   {
     id: 4,
-    name: "Car rental",
+    name: "Math magician",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+      "This is a straightforward application that provides basic mathematical operations, functioning as a calculator where you can easily perform various computations.",
     image: "./image/car_rental.png",
-    link: "https://car-rental-website.netlify.app/",
+    link: "https://magical-torte-c172f0.netlify.app/",
   },
   {
     id: 5,
-    name: "Car rental",
+    name: "Library",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+      "This is a library app that helps to control the library activities, it helps users to add books of their own and reserve books",
     image: "./image/car_rental.png",
-    link: "https://car-rental-website.netlify.app/",
+    link: "https://frontend-libba.onrender.com/signin",
   },
   {
     id: 6,
-    name: "Car rental",
+    name: "My portfolio",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+      "My personal portfolio that shows my skills and projects that I have worked on.",
     image: "./image/car_rental.png",
-    link: "https://car-rental-website.netlify.app/",
+    link: "https://irirwanirira.github.io/my-brand/index.html",
   },
 ];
 
 export function displayProjects(container) {
-  // const projectContainer = document.querySelector(".project_container");
   if (container) {
     projects.forEach((project) => {
       container.innerHTML += `
@@ -87,7 +86,7 @@ export function displayProjects(container) {
         <div class="work_description">
             <h2 title="Car rental" class="project_name">${project.name}</h2>
             <p class="project_description">${project.description}</p>
-            <a class="link_to_project" href="${project.link}">
+            <a class="link_to_project" href="${project.link}" target="_blank">
                 <img src="./image/navigate_link.png" alt="">
             </a>
         </div>

@@ -1,7 +1,6 @@
 import { retrieveFromStore } from "../../modules/helperFunctions.js";
 
 const navBar = document.querySelector(".navigation_side");
-const backArrow = document.querySelector(".back_button")
 
 navBar.innerHTML = `
     <div class="navbar_container">
@@ -18,13 +17,22 @@ navBar.innerHTML = `
     </div>
 `
 
-backArrow.innerHTML = `
-    <div class="login_blog_button">
-    <a href="./blog_list.html"><img title="Back" src="../../image/Go Back.png" alt="login arrow">
-    </a>
-    <p>Back</p>
-    </div>
-`
+const backArrow = document.querySelector(".back_button");
+const div = document.createElement("div");
+div.classList.add("login_blog_button");
+const button = document.createElement("button");
+button.id = "backBtn";
+button.title = "Back";
+button.style.cssText = "background-color: transparent; border: none; cursor: pointer; outline: none; padding: 0; margin: 0;";
+button.addEventListener("click", () => { window.history.back()})
+const img = document.createElement("img");
+img.title = "Back";
+img.src = "../../image/Go Back.png";
+img.alt = "login arrow";
+button.appendChild(img);
+div.appendChild(button);
+backArrow.appendChild(div);
+
 export function populateBlogList() {
     const blogContainer = document.querySelector(".blog_container");
     const blogList = retrieveFromStore("blogs");

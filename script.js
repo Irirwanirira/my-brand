@@ -130,7 +130,7 @@ form.addEventListener("submit", function validateContactForm(e) {
 });
 
 window.addEventListener("DOMContentLoaded", ()=> {
-  populateBlogList
+  populateBlogList()
   displayProjects(workContainer)
 });
 // form.addEventListener("submit", validateContactForm);
