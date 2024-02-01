@@ -3,102 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&family=Salsa&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../styles.css">
     <link rel="stylesheet" href="./blog.css">
     <title>Read blog</title>
 </head>
 <body>
-    <header class="navigation_side">
-        <div class="navbar_container">
-            <div class="logo_container">
-                <img class="logo" title="Logo" src="../../image/logo.png" alt="">
-            </div>
-            <nav class="nav_bar">
-                <div class="login_blog_button">
-                    <h3>Login</h3>
-                    <a href="../auth/loginpage.html"><img class="login_btn" title="login" src="../../image/Login.png" alt="login arrow">
-                    </a>
-                </div>
-            </nav>
-        </div>
-    </header>
+    <header class="navigation_side"></header>
+    <div class="back_button"></div>
     <section id="all_blogs_view">
-        <div class="nav_buttons">
-            <div class="login_blog_button">
-                <a href="./blog_list.html"><img title="Back" src="../../image/Go Back.png" alt="login arrow">
-                </a>
-                <p>Back</p>
-            </div>
-        </div>
-     
-        <article>
-            <div class="read_blog_contents">
-                <h2 title="Car rental" class="read_blog_name">Car rental</h2>
-                <p class="date">Date: <span>17/04/2023</span></p>
-                <img class="read_blog_image" src="../../image/blog_image.png" alt="">
-                <p class="blog_content">
-                    It is now day three through the Andela Boot camp. More two days left to finish working remotely.
-Today’s challenge was to create user interface templates for a book a meal web application completely from scratch and then host them on GitHub pages. No use of Frameworks such as Bootstrap or Materialize and download of templates, just pure CSS, HTML, and vanilla javascript. If you have ever coded a website from scratch without using frameworks, then you know how tiresome it could be especially if you are in the interview process try to catch up with time. If you are one of the developers that do not follow instructions, trust me you are more likely to fail on this.
-So before I tell you how I hosted my pages on GitHub pages, let me first tell you some interesting things about GitHub pages. GitHub Pages is a static site hosting service designed to host your personal or project pages directly from a GitHub repository. Its completely free and makes your static website go live in a blink of an eye.
-Now that you know what GitHub pages are, its high time I show you how I managed to host my UI templates. These are the steps I followed;
-
-Create a repository for the project on GitHub e.g order-meal
-Use your terminal to clone the repository and cd into it.
-Using your favorite text editor (e.g vs code, type code .) and the project will be opened by vs code for you.
-Add an index.html page in your root directory with a few lines of code and save your work.
-Commit all the changes and push your project back to GitHub.
-NOTE:
-Ensure that you use master as you branch or create a new branch named gh-pages, otherwise, it won’t work.
-
-BOOM!!!!!!! your web static page is now ready and live and can be accessed anywhere using the provided URL. The URL provide will be in this format ` https://{username}.github.io/{repository name}/
-For my sake, this is the link I got from hosting my pages. https://sendisteve.github.io/book-meal-pro/ go ahead and click on it to get inspired.
-Thanks for reading! If you enjoyed it, feel free to give it a clap👏 in 5 seconds.
-                </p>
-            </div>
-        </article>
-
-        <section class="reaction">
-            <div class="buttons">
-                <button>
-                    <img src="../../image/Comments.png" alt="">
-                </button>
-                <p>2</p>
-            </div>
-            <div class="buttons">
-                <button>
-                    <img src="../../image/like.png" alt="">
-                </button>
-                <p>20</p>
-            </div>
-        </section>
-
-        <div class="comment_section">
-            <form class="form" action="">
-                <input type="text" name="" id="" placeholder="Comment">
-            </form>
-            <div class="commentators">
-                <div class="comments">
-                    <div class="commentor_image">
-                        <img src="" alt="">
-                    </div>
-                    <div class="commentor_details">
-                        <h3>Rhys Calendar</h3>
-                        <p>Awesome details, Thanks for sharing</p>
-                    </div>
-                </div>
-               
-                <div class="comments">
-                    <div class="commentor_image">
-                        <img src="" alt="">
-                    </div>
-                    <div class="commentor_details">
-                        <h3>Chremanche</h3>
-                        <p>Awesome details, Thanks for sharing</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </section>
+    <script type="module" src="./blog.js"></script>
 </body>
 </html>

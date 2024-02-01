@@ -65,6 +65,11 @@ body {
   display: none;
 }
 
+.logo{
+  width: 5rem;
+  height: auto;
+}
+
 #home_view {
   display: flex;
   justify-content: space-between;
@@ -379,6 +384,9 @@ body {
   font-weight: 500;
   text-decoration: underline;
   color: #6f0014;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 #blog_view button {

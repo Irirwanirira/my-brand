@@ -109,6 +109,7 @@ if (!loggedInUser) {
         description: description.value,
         Date: date.toDateString(),
       };
+      console.log(photo.value)
       blogs.unshift(blog);
       saveLocally(blogs, "blogs");
     } else {
