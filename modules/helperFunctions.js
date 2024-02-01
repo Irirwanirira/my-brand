@@ -25,17 +25,75 @@ export function logout(){
     window.location.href = "../auth/loginpage.html"
 }
 
-// function navigateTo(sectionId){
-//     //Hide all sections
-//     const sections = document.querySelectorAll('section')
-//     sections.forEach(section => {
-//         section.classList.remove('active')
-//     })
 
-//     //show the selected section
-//     const selectedSection = document.getElementById(sectionId)
-//     if(selectedSection){
-//         selectedSection.classList.add("active")
-//     }
-// }
+const projects = [
+  {
+    id: 1,
+    name: "Car rental",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+    image: "./image/car_rental.png",
+    link: "https://car-rental-website.netlify.app/",
+  },
+  {
+    id: 2,
+    name: "Car rental",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+    image: "./image/car_rental.png",
+    link: "https://car-rental-website.netlify.app/",
+  },
+  {
+    id: 3,
+    name: "Car rental",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+    image: "./image/car_rental.png",
+    link: "https://car-rental-website.netlify.app/",
+  },
+  {
+    id: 4,
+    name: "Car rental",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+    image: "./image/car_rental.png",
+    link: "https://car-rental-website.netlify.app/",
+  },
+  {
+    id: 5,
+    name: "Car rental",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+    image: "./image/car_rental.png",
+    link: "https://car-rental-website.netlify.app/",
+  },
+  {
+    id: 6,
+    name: "Car rental",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates?",
+    image: "./image/car_rental.png",
+    link: "https://car-rental-website.netlify.app/",
+  },
+];
+
+export function displayProjects(container) {
+  // const projectContainer = document.querySelector(".project_container");
+  if (container) {
+    projects.forEach((project) => {
+      container.innerHTML += `
+      <div class="work">
+        <img src="./image/card_picture.png" alt="">
+        <div class="work_description">
+            <h2 title="Car rental" class="project_name">${project.name}</h2>
+            <p class="project_description">${project.description}</p>
+            <a class="link_to_project" href="${project.link}">
+                <img src="./image/navigate_link.png" alt="">
+            </a>
+        </div>
+      </div>
+      `;
+    });
+  }
+}
 
