@@ -52,10 +52,8 @@ function login(e){
     if(user){
         localStorage.setItem("loggedInUser", JSON.stringify(user))
         window.location.href = "../dashboard/dashboard.html"
-    }else if(!user){
-        alert('Please sign up');
     }else{
-        alert("Invalid credential. Please try again.")
+        alert("Invalid credential. Please try again or Sign Up.")
     }
 }
 
