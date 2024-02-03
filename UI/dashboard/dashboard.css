@@ -44,6 +44,25 @@ body {
   justify-content: space-between;
   padding: 0 4rem;
 }
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  text-align: center;
+}
 
 #nav_bar button img {
   width: 2.5rem;
@@ -200,9 +219,8 @@ body {
   cursor: pointer;
 }
 
-.action button img {
-  width: 1.5rem;
-  height: 1.5rem;
+.action button i {
+ color: #000;
 }
 
 .form_section {

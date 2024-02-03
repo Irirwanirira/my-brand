@@ -3,6 +3,7 @@ import {
   toggleNavBar,
   saveLocally,
   logout,
+  createPopAction,
 } from "../../modules/helperFunctions.js";
 
 const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -69,30 +70,52 @@ if (!loggedInUser) {
     </ul>
 `;
 
-  const messages = retrieveFromStore("messages");
+  let messages = retrieveFromStore("messages");
+  if (messagesContainer) {
+    messagesContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("fa-trash")) {
+        const message = e.target.parentElement.parentElement.parentElement;
+        const messageContent = message.children[2].textContent;
+        const messageIndex = messages.findIndex(
+          (message) => message.message === messageContent
+        );
+        createPopAction(
+          "Are you sure you want to delete this message?",
+          () => {
+            messages.splice(messageIndex, 1);
+            saveLocally(messages, "messages");
+            message.remove();
+          },
+          () => {
+            return;
+          }
+        
+        );
+      }
+    });
+  }
 
   function displayMsg() {
     messages.forEach((message) => {
       messagesContainer.innerHTML += `
-            <tr>
-                <td>${message.names}</td>
-                <td>${message.email}</td>
-                <td>${message.message}</td>
-                <td>${message.Date}</td>
-                <td>${message.Time}</td>
-                <td class="action">
-                    <button class="delete_btn">
-                    <img src="../../image/Remove.png" alt="delete icon">
-                    </button>
-                </td>
-            </tr>
+        <tr>
+            <td>${message.names}</td>
+            <td>${message.email}</td>
+            <td>${message.message}</td>
+            <td>${message.Date}</td>
+            <td>${message.Time}</td>
+            <td class="action">
+                <button class="delete_btn">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+            </td>
+        </tr>
     `;
     });
   }
 
   let blogs = [];
-  let blog;
-
+  let newBlog;
   const clearInput = () => {
     title.value = "";
     photo.value = "";
@@ -100,18 +123,18 @@ if (!loggedInUser) {
   };
 
   function storeBlogs() {
+    const existingStoredBlogs = retrieveFromStore("blogs");
     let date = new Date();
     if (title.value && photo.value && description.value) {
-      blog = {
+      newBlog = {
         id: blogs.length + 1,
         title: title.value,
         photo: photo.value,
         description: description.value,
         Date: date.toDateString(),
       };
-      console.log(photo.value)
-      blogs.unshift(blog);
-      saveLocally(blogs, "blogs");
+      existingStoredBlogs.unshift(newBlog);
+      saveLocally(existingStoredBlogs, "blogs");
     } else {
       console.log("Please fill in all the fields.");
     }
@@ -127,20 +150,78 @@ if (!loggedInUser) {
                   <td>Young Spartan</td>
                   <td>${blog.Date}</td>
                   <td class="action">
-                        <button>
-                        <img src="../../image/Eye.png" alt="delete icon">
+                        <button title="Edit">
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </button>
-                        <button>
-                            <img src="../../image/Create.png" alt="delete icon">
-                        </button>
-                        <button>
-                            <img src="../../image/Remove.png" alt="delete icon">
+                        <button title="Delete">
+                          <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
                   </td>
               </tr>
       `;
     });
   }
+
+  if (blogContainer) {
+    blogContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("fa-trash")) {
+        const blogRaw = e.target.parentElement.parentElement.parentElement;
+        const blogTitle = blogRaw.children[0].textContent;
+        const blogIndex = localBlogs.findIndex(
+          (blog) => blog.title === blogTitle
+        );
+        createPopAction(
+          "Are you sure you want to delete this blog?",
+          () => {
+            localBlogs.splice(blogIndex, 1);
+            saveLocally(localBlogs, "blogs");
+            blogRaw.remove();
+          },
+          () => {
+            return;
+          }
+        );
+      }
+    });
+  }
+
+  if (blogContainer) {
+    blogContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("fa-pencil-square-o")) {
+        const blogRaw = e.target.parentElement.parentElement.parentElement;
+        const blogTitle = blogRaw.children[0].textContent;
+        const blogIndex = localBlogs.findIndex(
+          (blog) => blog.title === blogTitle
+        );
+        console.log(blogIndex);
+        const title = document.querySelector("#title");
+        const photo = document.querySelector("#photo");
+        const description = document.querySelector("#description");
+        console.log("......",title)
+        title.value = localBlogs[blogIndex].title;
+        photo.value = localBlogs[blogIndex].photo;
+        description.value = localBlogs[blogIndex].description;
+        window.location.href = "./new_blog.html";
+        
+
+        
+        // createPopAction(
+        //   "Are you sure you want to delete this blog?",
+        //   () => {
+        //     localBlogs.splice(blogIndex, 1);
+        //     saveLocally(localBlogs, "blogs");
+        //     blogRaw.remove();
+        //   },
+        //   () => {
+        //     return;
+        //   }
+        // );
+      }
+    });
+  }
+
+  const storedUser = retrieveFromStore("users");
+  const storedComment = retrieveFromStore("comments");
   const dashboardContainer = document.querySelector(".welcome_view");
 
   function displayWelcome() {
@@ -155,13 +236,13 @@ if (!loggedInUser) {
                 <p>${localBlogs.length}</p>
             </section>
             <section class="right_card">
-                <h3>All Users</h3>
-                <p>5</p>
+                <h3>Users</h3>
+                <p>${storedUser ? storedUser.length : "No user yet" }</p>
             </section>
         </div>
         <section class="bottom_card">
             <h3>Comments</h3>
-            <p>30</p>
+            <p>${ storedComment.length >0 ? storedComment.length :" Comment section under development"}</p>
         </section>`;
   }
 
