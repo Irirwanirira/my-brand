@@ -28,24 +28,24 @@ function populateBlogList() {
     selectedBlogs.forEach((blog) => {
       let description = blog.description.slice(0, 80);
       blogContainer.innerHTML += `
-          <div class="blog_card" id="blog_card_desktop_view">
-            <img class="blog_image" src="./image/blog_image.png" alt="">
-            <div class="blog_description">
-                <h2 title="Car rental" class="blog_name">${blog.title}</h2>
-                <p class="blog_content">${description}...</p>
-            </div>
-            <button class="link_to_blog" id="${blog.id}">
-              Read more
-            </button>
+        <div class="blog_card" id="blog_card_desktop_view">
+          <img class="blog_image" src="${blog.photo}" alt="">
+          <div class="blog_description">
+              <h2 title="Car rental" class="blog_name">${blog.title}</h2>
+              <p class="blog_content">${description}...</p>
           </div>
-        `;
+          <button class="link_to_blog" id="${blog.id}">
+            Read more
+          </button>
+        </div>
+      `;
     });
     const readMoreBtn = document.querySelectorAll(".link_to_blog");
     readMoreBtn.forEach(btn => {
-        btn.addEventListener("click", (event) => { 
-            const blogId = event.target.id;
-            readBlog(parseInt(blogId))
-        })
+      btn.addEventListener("click", (event) => { 
+          const blogId = event.target.id;
+          readBlog(parseInt(blogId))
+      })
     })
   } else {
     blogContainer.innerHTML = `<h3>There are no blogs available</h3>`;
@@ -53,13 +53,14 @@ function populateBlogList() {
 }
 
 let messages = [];
-let message;
+let newMessage;
+let existingStoredMsg = retrieveFromStore("messages");
 
 function store() {
   let date = new Date();
   let time = new Date();
   if (nameInputField.value && emailInputField.value && messageField.value) {
-    message = {
+    newMessage = {
       id: messages.length + 1,
       names: nameInputField.value,
       email: emailInputField.value,
@@ -67,8 +68,8 @@ function store() {
       Date: date.toDateString(),
       Time: time.toTimeString(),
     };
-    messages.unshift(message);
-    saveLocally(messages, "messages");
+    existingStoredMsg.unshift(newMessage);
+    saveLocally(existingStoredMsg, "messages");
   } else {
     console.log("Please fill in all the fields.");
   }
@@ -133,4 +134,3 @@ window.addEventListener("DOMContentLoaded", ()=> {
   populateBlogList()
   displayProjects(workContainer)
 });
-// form.addEventListener("submit", validateContactForm);

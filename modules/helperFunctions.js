@@ -96,3 +96,49 @@ export function displayProjects(container) {
   }
 }
 
+export const createPopAction = (message, onConfirm, onCancel) => {
+  const popup = document.createElement('div');
+  popup.id = 'confirmationPopup';
+  popup.className = 'popup';
+
+  const popupContent = document.createElement('div');
+  popupContent.className = 'popup-content';
+
+  const popupText = document.createElement('p');
+  popupText.id = 'popupText';
+  popupText.textContent = message;
+
+  const confirmButton = document.createElement('button');
+  confirmButton.id = 'confirmButton';
+  confirmButton.textContent = 'Confirm';
+  confirmButton.style.cssText = 'background-color: green; color: white; border: none;  padding: 0.3rem; font-bold; margin: 0.5rem; border-radius: 2px; cursor: pointer;';
+
+  const cancelButton = document.createElement('button');
+  cancelButton.id = 'cancelButton';
+  cancelButton.textContent = 'Cancel';
+  cancelButton.style.cssText = 'background-color: #6f0014; color: white; border: none;  padding: 0.3rem; font-bold; margin: 0.5rem; border-radius: 2px; cursor: pointer;';
+
+  popupContent.appendChild(popupText);
+  popupContent.appendChild(confirmButton);
+  popupContent.appendChild(cancelButton);
+
+  popup.appendChild(popupContent);
+  document.body.appendChild(popup);
+
+  confirmButton.addEventListener('click', function () {
+    popup.style.display = 'none';
+    if (typeof onConfirm === 'function') {
+      onConfirm();
+    }
+  });
+
+  cancelButton.addEventListener('click', function () {
+    popup.style.display = 'none';
+    if (typeof onCancel === 'function') {
+      onCancel();
+    }
+  });
+
+  popup.style.display = 'block';
+}
+
