@@ -47,7 +47,6 @@ function login(e){
 
     const storedCredentials = JSON.parse(localStorage.getItem('users')) || [];
     const user = storedCredentials.find(u => u.email === loginEmail && u.password === loginPassword);
-    console.log("loginPassword", loginPassword)
 
     if(user){
         localStorage.setItem("loggedInUser", JSON.stringify(user))
