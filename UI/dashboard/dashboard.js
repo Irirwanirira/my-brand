@@ -121,16 +121,21 @@ if (!loggedInUser) {
     photo.value = "";
     description.value = "";
   };
+ 
 
   function storeBlogs() {
     const existingStoredBlogs = retrieveFromStore("blogs");
     let date = new Date();
+    const currentMilliseconds = date.getTime();
+    const id = `ID_${currentMilliseconds}`;
     if (title.value && photo.value && description.value) {
       newBlog = {
-        id: blogs.length + 1,
+        id: id,
         title: title.value,
         photo: photo.value,
         description: description.value,
+        comment: [],
+        like: 0,
         Date: date.toDateString(),
       };
       existingStoredBlogs.unshift(newBlog);
@@ -185,40 +190,42 @@ if (!loggedInUser) {
     });
   }
 
-  if (blogContainer) {
-    blogContainer.addEventListener("click", (e) => {
-      if (e.target.classList.contains("fa-pencil-square-o")) {
-        const blogRaw = e.target.parentElement.parentElement.parentElement;
-        const blogTitle = blogRaw.children[0].textContent;
-        const blogIndex = localBlogs.findIndex(
-          (blog) => blog.title === blogTitle
-        );
-        console.log(blogIndex);
-        const title = document.querySelector("#title");
-        const photo = document.querySelector("#photo");
-        const description = document.querySelector("#description");
-        console.log("......",title)
-        title.value = localBlogs[blogIndex].title;
-        photo.value = localBlogs[blogIndex].photo;
-        description.value = localBlogs[blogIndex].description;
-        window.location.href = "./new_blog.html";
+  // creating an edit feature, and it is still pending.
+
+  // if (blogContainer) {
+  //   blogContainer.addEventListener("click", (e) => {
+  //     if (e.target.classList.contains("fa-pencil-square-o")) {
+  //       const blogRaw = e.target.parentElement.parentElement.parentElement;
+  //       const blogTitle = blogRaw.children[0].textContent;
+  //       const blogIndex = localBlogs.findIndex(
+  //         (blog) => blog.title === blogTitle
+  //       );
+  //       console.log(blogIndex);
+  //       const title = document.querySelector("#title");
+  //       const photo = document.querySelector("#photo");
+  //       const description = document.querySelector("#description");
+  //       console.log("......",title)
+  //       title.value = localBlogs[blogIndex].title;
+  //       photo.value = localBlogs[blogIndex].photo;
+  //       description.value = localBlogs[blogIndex].description;
+  //       window.location.href = "./new_blog.html";
         
 
         
-        // createPopAction(
-        //   "Are you sure you want to delete this blog?",
-        //   () => {
-        //     localBlogs.splice(blogIndex, 1);
-        //     saveLocally(localBlogs, "blogs");
-        //     blogRaw.remove();
-        //   },
-        //   () => {
-        //     return;
-        //   }
-        // );
-      }
-    });
-  }
+  //       // createPopAction(
+  //       //   "Are you sure you want to delete this blog?",
+  //       //   () => {
+  //       //     localBlogs.splice(blogIndex, 1);
+  //       //     saveLocally(localBlogs, "blogs");
+  //       //     blogRaw.remove();
+  //       //   },
+  //       //   () => {
+  //       //     return;
+  //       //   }
+  //       // );
+  //     }
+  //   });
+  // }
 
   const storedUser = retrieveFromStore("users");
   const storedComment = retrieveFromStore("comments");

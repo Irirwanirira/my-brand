@@ -44,7 +44,7 @@ function populateBlogList() {
     readMoreBtn.forEach(btn => {
       btn.addEventListener("click", (event) => { 
           const blogId = event.target.id;
-          readBlog(parseInt(blogId))
+          readBlog(blogId)
       })
     })
   } else {
