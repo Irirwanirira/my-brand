@@ -244,7 +244,8 @@ body {
 
 .form_to_fill input {
   height: 2rem;
-  border: none;
+  border: 1px solid rgb(189, 189, 189);
+  background-color: transparent;
   border-radius: 5px;
   padding: 0 1rem;
   font-family: nunito sans-serif;

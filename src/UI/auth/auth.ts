@@ -2,7 +2,8 @@ import { toggleNavBar, User , saveLocally, retrieveFromStore} from "../../module
 
 const navBar = document.getElementById('nav_list') as HTMLUListElement | null;
 const menuBtn = document.getElementById('menu_btn') as HTMLImageElement | null; 
-
+menuBtn?.addEventListener("click", () => toggleNavBar(navBar));
+navBar?.addEventListener("click", () => toggleNavBar(navBar));
 const loginForm = document.getElementById("login") as HTMLFormElement | null;
 const registerForm = document.getElementById("register") as HTMLFormElement | null;
 
@@ -68,5 +69,4 @@ window.addEventListener("DOMContentLoaded", function() {
     if(loginForm){
         loginForm.addEventListener("submit", login)
     }
- });
- 
+});

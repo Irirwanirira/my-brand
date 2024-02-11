@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="path/to/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link  href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&family=Salsa&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./dashboard.css">
     <title>New article</title>
@@ -27,11 +31,12 @@
                     <label for="title">Title</label>
                     <input type="text" id="title" name="title">
                     <span id="titleError"></span>
-                    <label for="photo">Upload image</label>
+                    <label for="photo">Insert image Url</label>
                     <input type="text" name="photo" id="photo" placeholder="Paste image URL">
                     <span id="imageError"></span>
                     <label for="description"> Description</label>
-                    <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                    <div id="description"></div>
+                    <textarea style="display: none" id="detail" name="detail"></textarea>
                     <span id="descriptionError"></span>
                     <button>Post</button>
                     <span id="successMsg"></span>

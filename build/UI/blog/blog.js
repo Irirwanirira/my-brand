@@ -58,12 +58,11 @@ export function populateBlogList() {
            <div class="blog_card" id="blog_card_desktop_view">
             <img class="blog_image" src="${blog.photo}" alt=${blog.title}>
             <div class="blog_description">
+                <p class="blog_date">${blog.Date.slice(4)}</p>
                 <h2 title=${blog.title} class="blog_name">${blog.title}</h2>
-                <p class="blog_content">${description} ...
-                </p>
                 <div class="link_reaction">
                     <button class="link_to_blog" id="${blog.id}">
-                        Read more
+                        Read
                     </button>
                     <section class="reaction">
                         <div class="buttons">

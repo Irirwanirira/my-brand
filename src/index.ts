@@ -43,17 +43,16 @@ function populateBlogList() {
   const selectedBlogs = blogList.slice(0, 3);
   if (selectedBlogs.length > 0) {
     selectedBlogs.forEach((blog: BlogArr) => {
-      let description = blog.description.slice(0, 80);
       blogContainer.innerHTML += `
             <div class="blog_card" id="blog_card_desktop_view">
               <img class="blog_image" src="${blog.photo}" alt="">
               <div class="blog_description">
+                <p class="blog_date">${blog.Date.slice(4)}</p>
                   <h2 title="${blog.title}" class="blog_name">${blog.title}</h2>
-                  <p class="blog_content">${description}...</p>
+                <button class="link_to_blog" id="${blog.id}">
+                  Read
+                </button>
               </div>
-              <button class="link_to_blog" id="${blog.id}">
-                Read more
-              </button>
             </div>
           `;
     });

@@ -1,6 +1,8 @@
-import { saveLocally, retrieveFromStore } from "../../modules/helperFunction.js";
+import { toggleNavBar, saveLocally, retrieveFromStore } from "../../modules/helperFunction.js";
 const navBar = document.getElementById('nav_list');
 const menuBtn = document.getElementById('menu_btn');
+menuBtn === null || menuBtn === void 0 ? void 0 : menuBtn.addEventListener("click", () => toggleNavBar(navBar));
+navBar === null || navBar === void 0 ? void 0 : navBar.addEventListener("click", () => toggleNavBar(navBar));
 const loginForm = document.getElementById("login");
 const registerForm = document.getElementById("register");
 const nameInput = document.getElementById("registerName");
