@@ -1,3 +1,4 @@
+// import Quill from "quill";
 import { retrieveFromStore, toggleNavBar, logout, createPopAction, saveLocally, } from "../../modules/helperFunction.js";
 const loggedInUser = retrieveFromStore("loggedInUser");
 if (loggedInUser) {
@@ -116,12 +117,12 @@ if (loggedInUser) {
         let date = new Date();
         const currentMilliseconds = date.getTime();
         const id = `ID_${currentMilliseconds}`;
-        if (title.value && photo.value && description.value) {
+        if (title.value && photo.value && description.innerHTML) {
             newBlog = {
                 id: id,
                 title: title.value,
                 photo: photo.value,
-                description: description.value,
+                description: description.innerHTML,
                 comments: [],
                 likes: 0,
                 Date: date.toDateString(),
@@ -178,37 +179,46 @@ if (loggedInUser) {
         });
     }
     // creating an edit feature, and it is still pending.
-    // if (blogContainer) {
-    //   blogContainer.addEventListener("click", (e) => {
+    // function editBlog(event:any) {
+    //   const blogRaw = event.target.parentElement.parentElement.parentElement;
+    //   const blogTitle = blogRaw.children[0].textContent;
+    //   const blogIndex = localBlogs.findIndex(
+    //     (blog: BlogArr) => blog.title === blogTitle
+    //   );
+    //   console.log("index b:", blogIndex);
+    //   const title = document.querySelector("#title")! as HTMLInputElement;
+    //   const photo = document.querySelector("#photo") as HTMLInputElement;
+    //   const description = document.querySelector("#description") as HTMLDivElement;
+    //   console.log(title);
+    //   console.log(localBlogs[blogIndex])
+    //   title.value = localBlogs[blogIndex].title;
+    //   photo.value = localBlogs[blogIndex].photo;
+    //   description.innerHTML = localBlogs[blogIndex].description;
+    //   window.location.href = "./new_blog.html"; 
+    // }
+    // // if (blogContainer) {
+    //   blogContainer.addEventListener("click", (e:any) => {
     //     if (e.target.classList.contains("fa-pencil-square-o")) {
     //       const blogRaw = e.target.parentElement.parentElement.parentElement;
     //       const blogTitle = blogRaw.children[0].textContent;
     //       const blogIndex = localBlogs.findIndex(
     //         (blog) => blog.title === blogTitle
     //       );
-    //       console.log(blogIndex);
-    //       const title = document.querySelector("#title");
-    //       const photo = document.querySelector("#photo");
-    //       const description = document.querySelector("#description");
-    //       console.log("......",title)
-    //       title.value = localBlogs[blogIndex].title;
-    //       photo.value = localBlogs[blogIndex].photo;
-    //       description.value = localBlogs[blogIndex].description;
-    //       window.location.href = "./new_blog.html";
-    //       // createPopAction(
-    //       //   "Are you sure you want to delete this blog?",
-    //       //   () => {
-    //       //     localBlogs.splice(blogIndex, 1);
-    //       //     saveLocally(localBlogs, "blogs");
-    //       //     blogRaw.remove();
-    //       //   },
-    //       //   () => {
-    //       //     return;
-    //       //   }
-    //       // );
+    //       createPopAction(
+    //         "Are you sure you want to delete this blog?",
+    //         () => {
+    //           if(typeof(editBlog) === "function"){ 
+    //             editBlog(e);
+    //           }
+    //           // saveLocally(localBlogs, "blogs");
+    //         },
+    //         () => {
+    //           return;
+    //         }
+    //       );
     //     }
     //   });
-    // }
+    // // }
     const storedUser = retrieveFromStore("users");
     const storedComment = retrieveFromStore("comments");
     const dashboardContainer = document.querySelector(".welcome_view");
@@ -249,11 +259,19 @@ if (loggedInUser) {
             displayWelcome();
         }
     });
+    var quill = new Quill('#description', {
+        placeholder: 'Enter Detail',
+        theme: 'snow',
+        modules: {
+            toolbar: true,
+        }
+    });
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-        let titleField = description.value;
+        var delta = quill.getContents();
+        var html = quill.clipboard.convert(delta);
+        let titleField = title.value;
         let photoField = photo.value;
-        let descriptionField = description.value;
         const titleErr = document.getElementById("titleError");
         const imageErr = document.getElementById("imageError");
         const descrErr = document.getElementById("descriptionError");
@@ -277,7 +295,7 @@ if (loggedInUser) {
             else {
                 imageErr.textContent = "";
             }
-            if (descriptionField === "") {
+            if (!html) {
                 descrErr.textContent = "Description is required";
                 descrErr.style.color = "red";
                 description.focus();
@@ -297,6 +315,7 @@ if (loggedInUser) {
               box-shadow:  1px 1px 1px 1px; `;
             storeBlogs();
             form.reset();
+            window.location.href = "./blogs_page.html";
         }
         else {
             console.log("Error: titleErr, imageErr, descrErr, validMsg not found");
