@@ -1,12 +1,48 @@
-export type BlogArr = {
-  id: string;
+export type ArticleArr = {
+  _id: string;
   title: string;
+  author: string
   description: string;
-  photo: string;
-  Date: string;
+  image: string;
+  post_date: string;
   comments: string[];
-  likes: number;
+  likes: string[];
+  isDeleted: boolean
+  deleted: any
 };
+
+export function successMsgPop(message: string) {
+  const successMsg = document.createElement("div");
+  successMsg.style.cssText = `text-align: center; padding: 10px; background-color: #4CAF50; color: white; z-index: 100; position: fixed; top: 20%; right:20%; transform: translateX(-50%); border-radius: 5px; box-shadow: 0 0 5px 0 #4CAF50;`;
+  successMsg.classList.add("success_msg");
+  successMsg.innerHTML = `
+    <p>${message}</p>
+  `;
+  document.body.appendChild(successMsg);
+  setTimeout(() => {
+    successMsg.remove();
+  }, 2000);
+}
+
+export function getQueryParams(param:string){
+  const urlParams = new URLSearchParams(window.location.search)
+  return urlParams.get(param)
+}
+
+export const baseUrl = "https://my-brand-rvzj.onrender.com/brand/api/v1"
+export const fetchApi = async( url: string)=> {
+  try {
+    const response = await fetch(url)
+    if(!response){
+      console.log('Network response was not OK')
+    }
+    const data = await response.json()
+    return data
+    
+  } catch (error) {
+    throw error
+  }
+}
 
 export type Comments = {
   name: string;
@@ -14,12 +50,12 @@ export type Comments = {
 };
 
 export type Message = {
-  id: number;
+  _id: number;
   name: string;
   email: string;
   message: string;
-  Date: string;
-  Time: string;
+  date: string;
+  time: string;
 };
 
 export type User = {
@@ -53,6 +89,7 @@ export function retrieveFromStore(item: string): [] {
 
 export function logout() {
   localStorage.removeItem("loggedInUser");
+  localStorage.removeItem("accessToken");
   window.location.href = "../auth/loginpage.html";
 }
 

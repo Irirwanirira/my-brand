@@ -1,9 +1,14 @@
 import {
-  BlogArr,
+  ArticleArr,
   Comments,
+  fetchApi,
+  baseUrl,
+  getQueryParams,
   retrieveFromStore,
-  saveLocally,
+  successMsgPop,
 } from "../../modules/helperFunction.js";
+const articleId = getQueryParams("id");
+const accessToken: string | null = localStorage.getItem("accessToken");
 
 const navBar = document.querySelector(
   ".navigation_side"
@@ -50,153 +55,257 @@ if (backArrow) {
   console.log("No back button found");
 }
 
-export function populateBlogList() {
-  const blogContainer = document.querySelector(
-    ".blog_container"
-  ) as HTMLDivElement | null;
-  const blogList: BlogArr[] | any = retrieveFromStore("blogs");
-  function readBlog(id:string) {
-    const blog = blogList.find((blog:BlogArr) => blog.id === id);
-    localStorage.setItem("readBlog", JSON.stringify(blog));
-    window.location.href = "./read_blog.html";
-  }
-  if (blogContainer && blogList.length > 0) {
-    blogList.forEach((blog: BlogArr) => {
-      let description = blog.description.slice(0, 40);
-      blogContainer.innerHTML += `
-           <div class="blog_card" id="blog_card_desktop_view">
-            <img class="blog_image" src="${blog.photo}" alt=${blog.title}>
-            <div class="blog_description">
-                <p class="blog_date">${blog.Date.slice(4)}</p>
-                <h2 title=${blog.title} class="blog_name">${blog.title}</h2>
-                <div class="link_reaction">
-                    <button class="link_to_blog" id="${blog.id}">
-                        Read
-                    </button>
-                    <section class="reaction">
-                        <div class="buttons">
-                            <button id="your_comments">
-                                <i class="fa fa-comment" aria-hidden="true"></i>
-                            </button>
-                            <p>${blog?.comments?.length}</p>
-                        </div>
-                        <div class="buttons">
-                            <button id="your_like">
-                                <i class="fa fa-heart-o" aria-hidden="true"></i>
-                            </button>
-                            <p>20</p>
-                        </div>
-                    </section>
-                </div>
-            </div> 
-            </div>
-            `;
-    });
-    const readMoreBtn = document.querySelectorAll(".link_to_blog");
-    readMoreBtn.forEach((btn) => {
-      btn.addEventListener("click", (event: any) => {
-        const blogId = event.target.id;
-        readBlog(blogId);
+const displaySingleArticle = (article: ArticleArr) => {
+  const blogToReadContainer =
+    (document.querySelector("#all_blogs_view") as HTMLDivElement) || null;
+  blogToReadContainer.innerHTML = "";
+  const { _id, title, image, description, post_date, likes, comments } =
+    article;
+
+  const author: any = article.author;
+  const name: string = (author as { name: string }).name;
+
+  blogToReadContainer.innerHTML += `
+    <article>
+        <div class="read_blog_contents">
+            <h2 title="${title}" class="read_blog_name">${title}</h2>
+            <p class="date">Date:  <span>${post_date.slice(0, 10)}</span></p>
+            <p class="date">Author: <span>${name}</span></p>
+            <img class="read_blog_image" src="${image}" alt="${title}">
+            <p class="blog_content">${description}</p>
+        </div>
+    </article>
+    <section class="reaction">
+    <div class="buttons">
+        <button title="comment" id="${_id}">
+            <i class="fa fa-comment" aria-hidden="true"></i>
+        </button>
+        <p>${comments.length}</p>
+        </div>
+        <div class="buttons">
+        <button title="like" id="${_id}">
+        <i class="fa fa-heart-o" aria-hidden="true"></i>
+            </button>
+            <p>${likes?.length}</p>
+        </div>
+    </section>
+    <div class="comment_section">
+    <form class="form" id="comment-form " action="submit">
+        <input type="text" name="comment" id="commentor-comment" placeholder="Comment">
+        <button type="submit">Comment</button>
+    </form>
+    <h1>Comments</h1>
+    <div class="commentators"></div>
+    </div>
+    `;
+  const commentBtn =
+    (document.querySelectorAll(
+      ".fa-comment"
+    ) as NodeListOf<HTMLButtonElement>) || null;
+
+  const commentForm =
+    (document.querySelector(".form") as HTMLFormElement) || null;
+  commentForm.addEventListener("submit", () => {
+    const content =
+      (document.querySelector('input[name="comment"]') as HTMLInputElement) ||
+      null;
+    const contentValue = content?.value;
+    addComment(event, articleId, contentValue);
+  });
+
+  async function addComment(e: any, articleId: any, contentValue: any) {
+    e.preventDefault();
+    const user: any = retrieveFromStore("loggedInUser");
+    const body = { content: contentValue, author: user?.id, post: articleId };
+    try {
+      const response = await fetch(`${baseUrl}/comment/${articleId}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer "${accessToken}"`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(body),
       });
-    });
-  } else {
-    blogContainer ?
-    blogContainer.innerHTML = "<h3>No blogs available</h3>" : console.log("No blog container found");
+      const data = await response.json();
+      if (!response.ok) {
+        successMsgPop(data.message);
+        return;
+      }
+      window.location.reload();
+    } catch (error) {
+      console.error("Comment Error:", error);
+      throw error;
+    }
   }
+
+  const likeBtn = document.querySelectorAll(
+    ".fa-heart-o"
+  ) as NodeListOf<HTMLButtonElement>;
+  likeBtn.forEach((btn) =>
+    btn.addEventListener("click", (e) => {
+      const articleId: any = btn?.parentElement?.id;
+      likeArticle(articleId);
+    })
+  );
+  const comment =
+    (document.querySelector(".commentators") as HTMLDivElement) || null;
+  comments?.length > 0
+    ? (comment.innerHTML = "")
+    : (comment.innerHTML = "<h3>No comments available</h3>");
+  comments.forEach((item: any) => {
+    comment.innerHTML += `
+      <div class="comments">
+          <div class="commentor_details">
+              <h3>${item.author.name}: </h3>
+              <p>${item.content}</p>
+              <button id=${item._id} style="background-color: transparent; border: none; cursor: pointer; outline: none; padding: 0; margin-left: 4rem">
+                <i class="fa fa-trash" aria-hidden="true" style="color: #6f0014"></i>
+              </button>
+          </div>
+      </div>`;
+      const deleteBtn = document.querySelectorAll(".fa-trash");
+      deleteBtn.forEach((btn) =>
+        btn.addEventListener("click", () => {
+          const commentId: any = btn?.parentElement?.id;
+          deleteComment(commentId);
+          
+        })
+      );
+  });
+};
+
+async function deleteComment(commentId: any) {
+  fetch(`${baseUrl}/comment/${commentId}`,{
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer "${accessToken}"`,
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    }
+  })
+ .then(response => response.text())
+ .then(text => {
+    try { 
+      successMsgPop('Comment deleted successfully');
+    window.location.reload();
+      return JSON.parse(text);
+     
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+      throw error; 
+    }
+ })
+ .then(data => {
+    if(data.status === 200){
+      successMsgPop(data.message);
+      window.location.reload();
+    }else{
+      successMsgPop(data.message);
+    }
+ })
+ .catch(error => {
+    console.error('An error occurred:', error);
+   
+ });
 }
 
-function readBlog() {
-  const blogToReadContainer = document.querySelector("#all_blogs_view") as  HTMLDivElement | null;
-  
-  const blogToRead: any = retrieveFromStore("readBlog");
-  if( blogToReadContainer && blogToRead ){
 
-      const { title, photo, description, Date, likes, comments } = blogToRead;
-      blogToReadContainer.innerHTML += `
-      <article>
-          <div class="read_blog_contents">
-              <h2 title="${title}" class="read_blog_name">${title}</h2>
-              <p class="date">Date:  <span>${Date}</span></p>
-              <img class="read_blog_image" src="${photo}" alt="${title}">
-              <p class="blog_content">${description}</p>
-          </div>
-      </article>
-      <section class="reaction">
-      <div class="buttons">
-          <button id="your_comments">
-              <i class="fa fa-comment" aria-hidden="true"></i>
-          </button>
-          <p>${comments.length}</p>
-          </div>
-          <div class="buttons">
-              <button id="your_like">
-                  <i class="fa fa-heart-o" aria-hidden="true"></i>
-              </button>
-              <p>${likes}</p>
-          </div>
-      </section>
+export const fetchSingleArticle = (blogId: any) => {
+  fetchApi(`${baseUrl}/article/${blogId}`)
+    .then((data) => {
+      const article = data.data.article;
+      displaySingleArticle(article);
+    })
+    .catch((error) => console.log("unable to fetch targeted Article:", error));
+};
 
-      <div class="comment_section">
-      <form class="form" id="comment-form" action="submit">
-          <input type="text" name="commentor-name" id="commentor-name" placeholder="Name">
-          <input type="text" name="commentor-comment" id="commentor-comment" placeholder="Comment">
-          <button type="submit">Comment</button>
-      </form>
-      <h1>Comments</h1>
-      <div class="commentators"></div>
-      </div>
-      `;
-   
-      const commentatorContainer = document.querySelector(".commentators");
-      const commentForm = document.querySelector("#comment-form") as HTMLFormElement | null;
-      if (commentForm && commentatorContainer) {
-        commentForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const name = commentForm["commentor-name"].value;
-        const commentText = commentForm["commentor-comment"].value;
-        const comments: Comments = { name, comment: commentText };
-  
-        const blogArray = retrieveFromStore("blogs");
-        const blogIndex = blogArray.findIndex(
-          (blog: BlogArr) => blog.id === blogToRead.id
-        );
-        const blogToComment: BlogArr = blogArray[blogIndex];
-        const commentArr: any = blogToComment.comments
-  
-        if (commentArr) {
-          commentArr.unshift(comments);
-        }
-        saveLocally("blogs", blogArray);
-        commentForm.reset();
-        commentatorContainer.innerHTML += `
-        <div class="comments">
-            <div class="commentor_details">
-                <h3>${name}: </h3>
-                <p>${commentText}</p>
-            </div>
-        </div>
-    `;
-        
-        }
+export function populateBlogList() {
+  const blogContainer =
+    (document.querySelector(".blog_container") as HTMLDivElement) || null;
+  fetchApi(`${baseUrl}/article`)
+    .then((data) => {
+      const article = data.data.articles;
+      const activeArticle = article.filter(
+        (item: ArticleArr) => item.isDeleted === false
       );
-    }else{
-      console.log("No comment form or commentator container found")
-    }
+      activeArticle.reverse().forEach((item: ArticleArr) => {
+        blogContainer.innerHTML += `<div class="blog_card" id="blog_card_desktop_view">
+             <img class="blog_image" src="${item?.image}" alt=${item?.title}>
+             <div class="blog_description">
+                 <p class="blog_date">${item?.post_date.slice(0, 10)}</p>
+                 <h2 title=${item?.title} class="blog_name">${item?.title}</h2>
+                 <div class="link_reaction">
+                     <button class="link_to_blog" id="${item?._id}" data-id=${
+          item._id
+        }>
+                         Read
+                     </button>
+                     <section class="reaction">
+                         <div class="buttons">
+                             <button title="comment"  id="your_comments">
+                                 <i class="fa fa-comment" aria-hidden="true"></i>
+                             </button>
+                             <p>${item?.comments?.length}</p>
+                         </div>
+                         <div class="buttons">
+                             <button title="like" id="${item._id}">
+                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                             </button>
+                             <p>${item?.likes?.length}</p>
+                         </div>
+                     </section>
+                 </div>
+             </div> 
+             </div>
+             `;
+        const likeBtn = document.querySelectorAll(
+          ".fa-heart-o"
+        ) as NodeListOf<HTMLButtonElement>;
+        likeBtn.forEach((btn) =>
+          btn.addEventListener("click", (e) => {
+            const articleId: any = btn?.parentElement?.id;
+            likeArticle(articleId);
+          })
+        );
+      });
 
-      if ( commentatorContainer && comments && comments.length > 0) {
-        comments.forEach((item: Comments) => {
-          commentatorContainer.innerHTML += `
-          <div class="comments">
-              <div class="commentor_details">
-                  <h3>${item.name}: </h3>
-                  <p>${item.comment}</p>
-              </div>
-          </div>
-       `;
-        });
-      }else {
-        commentatorContainer && comments ? commentatorContainer.innerHTML = "<h3>No comments available</h3>" : console.log("No commentator container found");
-      };
+      const readMoreBtn = document.querySelectorAll(".link_to_blog");
+      readMoreBtn.forEach((btn) =>
+        btn.addEventListener("click", () => {
+          const blogId: any = btn?.getAttribute("data-id");
+          window.location.href = `./read_blog.html?id=${blogId}`;
+        })
+      );
+    })
+    .catch((error) => console.log("Unable to get articles,", error));
+}
+
+
+async function likeArticle(articleId: any) {
+  try {
+    const user: any = retrieveFromStore("loggedInUser");
+    const body = { user: user?.id, article: articleId };
+    const response = await fetch(`${baseUrl}/like/${articleId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer "${accessToken}"`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      successMsgPop(data.message);
+      return;
+    }
+    successMsgPop(data.message);
+    window.location.reload();
+  } catch (error) {
+    console.error("Like Error:", error);
+    throw error;
   }
 }
 
@@ -204,6 +313,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.location.href.includes("blog_list")) {
     populateBlogList();
   } else if (window.location.href.includes("read_blog")) {
-    readBlog();
+    fetchSingleArticle(articleId);
   }
 });
