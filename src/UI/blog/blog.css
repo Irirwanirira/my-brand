@@ -145,6 +145,10 @@ form{
     gap: 0.5rem;
 }
 
+.activeForm{
+    display: none;
+}
+
 .form input{
     max-width: 600px;
     padding: 1rem;
@@ -185,7 +189,10 @@ form{
 .commentor_details{
     display: flex;
     align-items: center;
+    justify-content: center;
+    padding: 0.1rem 1rem;
     gap: 0.5rem;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
 }
 
 .commentor_details h3{
