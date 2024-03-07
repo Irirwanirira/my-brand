@@ -235,11 +235,11 @@ function displayArticles(container: HTMLElement) {
       console.error("Fetch Error:", error);
     });
 }
-
+// consider this part to be one of the part of updating article but which is still under develpment
 async function fetchEditArticle(articleId: any) {
   try {
-    const response = await fetch(`${baseUrl}/article/${articleId}`, {
-      method: "PATCH",
+    const response = await fetch(`http://localhost:3000/brand/api/v1/article/${articleId}`, {
+      method: "GET",
       headers: {
         authorization: `Bearer "${accessToken}"`,
         "Content-Type": "application/json",
@@ -266,11 +266,50 @@ async function fetchEditArticle(articleId: any) {
     imageInput.value = image;
     descriptionInput.value = description;
     button.innerText = "Edit Article";
+    button.addEventListener("click", () => {
+      updateArticle(articleId, {
+        title: titleInput.value,
+        image: imageInput.value,
+        description: descriptionInput.value,
+      });
+    });
 
   } catch (error) {
     console.error("Fetch Error:", error);
   }
 }
+// This part is under development
+async function updateArticle(id: any, data: any) {
+  const successMsg = document.querySelector("#successMsg") as HTMLSpanElement;
+  console.log(successMsg)
+
+  try {
+    const response = await fetch(`${baseUrl}/article/${id}`, {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer "${accessToken}"`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const responseData = await response.json();
+    successMsg.innerText = responseData.message;
+    console.log(responseData.message)
+
+    if (!response.ok) {
+      console.log(response);
+      throw new Error("Network response was not ok");
+    }
+    console.log("when response fails", responseData)
+    successMsgPop(responseData.message);
+    window.location.href = "./blogs_page.html";
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+
+}
+// until here 
 
 async function softDeleteArticle(id: any) {
   try {
@@ -429,3 +468,73 @@ async function createArticle(e: any) {
     console.log(err);
   }
 }
+
+async function fetchUsers(){
+  try {
+    const response = await fetch(`${baseUrl}/auth/users`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer "${accessToken}"`,
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    const users = data.data.users;
+    const userContainer = document.querySelector(".user_container") as HTMLElement || null;
+    users.forEach((user: User) => {
+      userContainer.innerHTML += `
+      <tr>
+        <td>${user?.name}</td>
+        <td>${user.email}</td>
+        <td>${user.role}</td>
+        <td class="action">
+          <button title="Delete" id=${user._id} class="deleteUser">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+      `;
+    });
+    const deleteUserBtn = document.querySelectorAll(".deleteUser") as NodeListOf<HTMLButtonElement>;
+    deleteUserBtn.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.id;
+        createPopAction(
+          "Are you sure you want to delete this user?",
+          () => {
+            deleteUser(userId);
+            btn?.parentElement?.parentElement?.remove();
+          },
+          () => {
+            return;
+          }
+        );
+      });
+    });
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+}
+
+async function deleteUser(userId: any){
+  try {
+    const response = await fetch(`${baseUrl}/auth/delete/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer "${accessToken}"`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    successMsgPop("User was deleted successfully");
+  }
+  catch (error) {
+    console.error("An error occurred:", error);
+  }
+}
+
+fetchUsers();

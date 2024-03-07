@@ -192,11 +192,12 @@ function displayArticles(container) {
         console.error("Fetch Error:", error);
     });
 }
+// consider this part to be one of the part of updating article but which is still under develpment
 function fetchEditArticle(articleId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield fetch(`${baseUrl}/article/${articleId}`, {
-                method: "PATCH",
+            const response = yield fetch(`http://localhost:3000/brand/api/v1/article/${articleId}`, {
+                method: "GET",
                 headers: {
                     authorization: `Bearer "${accessToken}"`,
                     "Content-Type": "application/json",
@@ -218,12 +219,51 @@ function fetchEditArticle(articleId) {
             imageInput.value = image;
             descriptionInput.value = description;
             button.innerText = "Edit Article";
+            button.addEventListener("click", () => {
+                updateArticle(articleId, {
+                    title: titleInput.value,
+                    image: imageInput.value,
+                    description: descriptionInput.value,
+                });
+            });
         }
         catch (error) {
             console.error("Fetch Error:", error);
         }
     });
 }
+// This part is under development
+function updateArticle(id, data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const successMsg = document.querySelector("#successMsg");
+        console.log(successMsg);
+        try {
+            const response = yield fetch(`${baseUrl}/article/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer "${accessToken}"`,
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+            const responseData = yield response.json();
+            successMsg.innerText = responseData.message;
+            console.log(responseData.message);
+            if (!response.ok) {
+                console.log(response);
+                throw new Error("Network response was not ok");
+            }
+            console.log("when response fails", responseData);
+            successMsgPop(responseData.message);
+            window.location.href = "./blogs_page.html";
+        }
+        catch (error) {
+            console.error("An error occurred:", error);
+        }
+    });
+}
+// until here 
 function softDeleteArticle(id) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -378,3 +418,72 @@ function createArticle(e) {
         }
     });
 }
+function fetchUsers() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch(`${baseUrl}/auth/users`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer "${accessToken}"`,
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = yield response.json();
+            const users = data.data.users;
+            const userContainer = document.querySelector(".user_container") || null;
+            users.forEach((user) => {
+                userContainer.innerHTML += `
+      <tr>
+        <td>${user === null || user === void 0 ? void 0 : user.name}</td>
+        <td>${user.email}</td>
+        <td>${user.role}</td>
+        <td class="action">
+          <button title="Delete" id=${user._id} class="deleteUser">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+      `;
+            });
+            const deleteUserBtn = document.querySelectorAll(".deleteUser");
+            deleteUserBtn.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const userId = btn.id;
+                    createPopAction("Are you sure you want to delete this user?", () => {
+                        var _a, _b;
+                        deleteUser(userId);
+                        (_b = (_a = btn === null || btn === void 0 ? void 0 : btn.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.remove();
+                    }, () => {
+                        return;
+                    });
+                });
+            });
+        }
+        catch (error) {
+            console.error("An error occurred:", error);
+        }
+    });
+}
+function deleteUser(userId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch(`${baseUrl}/auth/delete/${userId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer "${accessToken}"`,
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+            });
+            const data = yield response.json();
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            successMsgPop("User was deleted successfully");
+        }
+        catch (error) {
+            console.error("An error occurred:", error);
+        }
+    });
+}
+fetchUsers();
