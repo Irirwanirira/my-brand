@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 export function successMsgPop(message) {
     const successMsg = document.createElement("div");
-    successMsg.style.cssText = `text-align: center; padding: 10px; background-color: #4CAF50; color: white; z-index: 100; position: fixed; top: 20%; right:0; transform: translateX(-50%); border-radius: 5px; box-shadow: 0 0 5px 0 #4CAF50;`;
+    successMsg.style.cssText = `text-align: center; padding: 10px; background-color: #4CAF50; color: white; z-index: 100; position: fixed; top: 20%; right:20%; transform: translateX(-50%); border-radius: 5px; box-shadow: 0 0 5px 0 #4CAF50;`;
     successMsg.classList.add("success_msg");
     successMsg.innerHTML = `
     <p>${message}</p>
