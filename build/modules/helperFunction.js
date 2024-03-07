@@ -1,3 +1,42 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+export function successMsgPop(message) {
+    const successMsg = document.createElement("div");
+    successMsg.style.cssText = `text-align: center; padding: 10px; background-color: #4CAF50; color: white; z-index: 100; position: fixed; top: 20%; right:0; transform: translateX(-50%); border-radius: 5px; box-shadow: 0 0 5px 0 #4CAF50;`;
+    successMsg.classList.add("success_msg");
+    successMsg.innerHTML = `
+    <p>${message}</p>
+  `;
+    document.body.appendChild(successMsg);
+    setTimeout(() => {
+        successMsg.remove();
+    }, 2000);
+}
+export function getQueryParams(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+export const baseUrl = "https://my-brand-rvzj.onrender.com/brand/api/v1";
+export const fetchApi = (url) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const response = yield fetch(url);
+        if (!response) {
+            console.log('Network response was not OK');
+        }
+        const data = yield response.json();
+        return data;
+    }
+    catch (error) {
+        throw error;
+    }
+});
 export function toggleNavBar(prop) {
     prop.classList.toggle("active");
 }
@@ -20,6 +59,7 @@ export function retrieveFromStore(item) {
 }
 export function logout() {
     localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("accessToken");
     window.location.href = "../auth/loginpage.html";
 }
 const projects = [

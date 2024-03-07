@@ -1,145 +1,95 @@
-import { retrieveFromStore, toggleNavBar, displayProjects, saveLocally, } from "./modules/helperFunction.js";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { toggleNavBar, displayProjects, baseUrl, fetchApi, getQueryParams } from "./modules/helperFunction.js";
+// import { fetchSingleArticle } from "./UI/blog/blog.js";
+const articleId = getQueryParams("id");
+console.log(articleId);
 const navBar = document.getElementById("nav_list");
 const menuBtn = document.getElementById("menu_btn");
 const form = document.querySelector("#form");
-const nameInputField = document.getElementById("name_input");
-const emailInputField = document.getElementById("email_input");
-const messageField = document.getElementById("message_text");
 const workContainer = document.querySelector(".work_container");
 menuBtn.addEventListener("click", () => toggleNavBar(navBar));
 navBar.addEventListener("click", () => toggleNavBar(navBar));
-function populateBlogList() {
+const fetchArticle = () => {
+    fetchApi(`${baseUrl}/article`)
+        .then((data) => {
+        const article = data.data.articles.reverse().slice(0, 3);
+        displayArticle(article);
+    })
+        .catch(err => (console.log("unable to fetch data article")));
+};
+function displayArticle(article) {
     const blogContainer = document.querySelector(".blog_container") || null;
     if (!blogContainer) {
         alert("error:" + " " + "blog container not found");
         return;
     }
-    const blogList = retrieveFromStore("blogs");
-    function readBlog(id) {
-        const blog = blogList.find((blog) => blog.id === id);
-        localStorage.setItem("readBlog", JSON.stringify(blog));
-        window.location.href = "./UI/blog/read_blog.html";
-    }
-    const selectedBlogs = blogList.slice(0, 3);
-    if (selectedBlogs.length > 0) {
-        selectedBlogs.forEach((blog) => {
-            blogContainer.innerHTML += `
-            <div class="blog_card" id="blog_card_desktop_view">
-              <img class="blog_image" src="${blog.photo}" alt="">
-              <div class="blog_description">
-                <p class="blog_date">${blog.Date.slice(4)}</p>
-                  <h2 title="${blog.title}" class="blog_name">${blog.title}</h2>
-                <button class="link_to_blog" id="${blog.id}">
-                  Read
-                </button>
-              </div>
-            </div>
-          `;
-        });
-        const readMoreBtn = document.querySelectorAll(".link_to_blog");
-        readMoreBtn.forEach((btn) => {
-            btn.addEventListener("click", (event) => {
-                const target = event.target;
-                if (target) {
-                    const blogId = target.id;
-                    readBlog(blogId);
-                }
-                else {
-                    alert("error:" + " " + "button not found");
-                }
-            });
-        });
-    }
-    else {
-        blogContainer.innerHTML = `<h3>There are no blogs available</h3>`;
-    }
-}
-let messages = [];
-let newMessage;
-const existingStoredMsg = retrieveFromStore("messages");
-function store() {
-    let date = new Date();
-    if (nameInputField.value && emailInputField.value && messageField.value) {
-        newMessage = {
-            id: messages.length + 1,
-            name: nameInputField.value,
-            email: emailInputField.value,
-            message: messageField.value,
-            Date: date.toDateString(),
-            Time: date.toLocaleTimeString(),
-        };
-        if (existingStoredMsg) {
-            existingStoredMsg.unshift(newMessage);
-            saveLocally("messages", existingStoredMsg);
-        }
-        else {
-            console.log("Message storage not found");
-        }
-    }
-    else {
-        console.log("Kindly fill all the fields");
-    }
-}
-if (form) {
-    form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        let name = nameInputField.value;
-        let email = emailInputField.value;
-        let message = messageField.value;
-        const nameError = document.querySelector("#nameError");
-        const emailError = document.querySelector("#emailError");
-        const messageError = document.querySelector("#messageError");
-        const validForm = document.getElementById("validForm");
-        if (nameError && emailError && messageError && validForm) {
-            if (name.length < 2) {
-                nameError.style.color = "red";
-                nameError.innerText = "Please enter your name";
-                return false;
-            }
-            else {
-                nameError.style.display = "none";
-            }
-            if (email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
-                emailError.style.display = "none";
-            }
-            else {
-                emailError.style.color = "red";
-                emailError.innerText = "Please enter a valid email";
-                return false;
-            }
-            if (!message.length) {
-                messageError.style.color = "red";
-                messageError.innerText = "Please enter your message";
-                return false;
-            }
-            else {
-                messageError.style.display = "none";
-            }
-            validForm.innerText = "Your message has been sent";
-            validForm.style.cssText = `
-        display: block; 
-        color: green;
-        text-align: center;
-        margin: 0 auto;
-        padding: 10px;
-        animation: fadeOut 5s ease-in-out forwards;
-        box-shadow:  1px 1px 1px 1px; `;
-            store();
-            form.reset();
-        }
-        else {
-            console.log("error:" + " " + "nameError, emailError, validError are not found");
-        }
-        // let name = form["name"].value;
-        // let email = form["email"].value;
-        // let message = form["textContent"].value ;
-        // console.log(name, email, message)
+    article.forEach((item) => {
+        blogContainer.innerHTML += `
+      <div class="blog_card" id="blog_card_desktop_view">
+      <img class="blog_image" src="${item.image}" alt="${item.title}">
+      <div class="blog_description">
+        <p class="blog_date">${item.post_date.slice(0, 10)}</p>
+          <h2 title="${item.title}" class="blog_name">${item.title}</h2>
+          <button class="link_to_blog" id="${item === null || item === void 0 ? void 0 : item._id}" data-id=${item._id}>
+          Read
+        </button>
+      </div>
+    </div>
+    `;
     });
+    const readMoreBtn = document.querySelectorAll(".link_to_blog");
+    readMoreBtn.forEach(btn => btn.addEventListener("click", () => {
+        console.log(btn);
+        const blogId = btn === null || btn === void 0 ? void 0 : btn.getAttribute('data-id');
+        window.location.href = `./read_blog.html?id=${blogId}`;
+    }));
 }
-else {
-    console.log("form not found");
+const sendMessage = (event) => __awaiter(void 0, void 0, void 0, function* () {
+    const nameInputField = document.getElementById("name_input") || null;
+    const emailInputField = document.getElementById("email_input") || null;
+    const messageField = document.getElementById("message_text");
+    let name = nameInputField === null || nameInputField === void 0 ? void 0 : nameInputField.value;
+    let email = emailInputField === null || emailInputField === void 0 ? void 0 : emailInputField.value;
+    let message = messageField === null || messageField === void 0 ? void 0 : messageField.value;
+    const validForm = document.getElementById("validForm") || null;
+    try {
+        event.preventDefault();
+        const messageObj = { name, email, message };
+        const response = yield fetch(`${baseUrl}/message`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(messageObj),
+        });
+        const data = yield response.json();
+        if (!response.ok) {
+            validForm.innerText = data.message;
+            validForm.style.color = "red";
+            validForm.style.textAlign = "center";
+            return;
+        }
+        validForm.style.color = "green";
+        validForm.style.textAlign = "center";
+        validForm.innerText = " Message sent successfully";
+        form === null || form === void 0 ? void 0 : form.reset();
+    }
+    catch (error) {
+        console.log("Unable to submit your message:", error);
+    }
+});
+if (form) {
+    form.addEventListener("submit", sendMessage);
 }
 window.addEventListener("DOMContentLoaded", () => {
-    populateBlogList();
+    fetchArticle();
     displayProjects(workContainer);
 });
