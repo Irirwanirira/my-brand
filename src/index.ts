@@ -22,7 +22,7 @@ const fetchArticle = (): void=> {
     displayArticle(article)
   })
   .catch(err =>(
-    console.log("unable to fetch data article")
+    console.log("unable to fetch data article", err)
   )) 
 }
 
@@ -50,7 +50,8 @@ function displayArticle(article: ArticleArr[]) {
       const readMoreBtn = document.querySelectorAll(".link_to_blog")
       readMoreBtn.forEach(btn => btn.addEventListener("click", ()=> {
         const id = btn.getAttribute("data-id")
-        window.location.href = `/src/UI/blog/read_blog.html?id=${id}`
+        // window.location.href = `/src/UI/blog/read_blog.html?id=${id}`
+        window.location.href = `./UI/blog/read_blog.html?id=${id}`
       }))
 }
 

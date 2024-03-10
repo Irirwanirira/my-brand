@@ -20,7 +20,7 @@ const fetchArticle = () => {
         const article = data.data.articles.reverse().slice(0, 3);
         displayArticle(article);
     })
-        .catch(err => (console.log("unable to fetch data article")));
+        .catch(err => (console.log("unable to fetch data article", err)));
 };
 function displayArticle(article) {
     const blogContainer = document.querySelector(".blog_container") || null;
@@ -45,7 +45,8 @@ function displayArticle(article) {
     const readMoreBtn = document.querySelectorAll(".link_to_blog");
     readMoreBtn.forEach(btn => btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-id");
-        window.location.href = `/src/UI/blog/read_blog.html?id=${id}`;
+        // window.location.href = `/src/UI/blog/read_blog.html?id=${id}`
+        window.location.href = `./UI/blog/read_blog.html?id=${id}`;
     }));
 }
 const sendMessage = (event) => __awaiter(void 0, void 0, void 0, function* () {
