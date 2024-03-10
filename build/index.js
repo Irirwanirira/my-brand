@@ -7,10 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { toggleNavBar, displayProjects, baseUrl, fetchApi, getQueryParams } from "./modules/helperFunction.js";
-// import { fetchSingleArticle } from "./UI/blog/blog.js";
-const articleId = getQueryParams("id");
-console.log(articleId);
+import { toggleNavBar, displayProjects, baseUrl, fetchApi, } from "./modules/helperFunction.js";
 const navBar = document.getElementById("nav_list");
 const menuBtn = document.getElementById("menu_btn");
 const form = document.querySelector("#form");
@@ -47,9 +44,8 @@ function displayArticle(article) {
     });
     const readMoreBtn = document.querySelectorAll(".link_to_blog");
     readMoreBtn.forEach(btn => btn.addEventListener("click", () => {
-        console.log(btn);
-        const blogId = btn === null || btn === void 0 ? void 0 : btn.getAttribute('data-id');
-        window.location.href = `./read_blog.html?id=${blogId}`;
+        const id = btn.getAttribute("data-id");
+        window.location.href = `/src/UI/blog/read_blog.html?id=${id}`;
     }));
 }
 const sendMessage = (event) => __awaiter(void 0, void 0, void 0, function* () {

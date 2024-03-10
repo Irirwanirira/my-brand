@@ -4,11 +4,7 @@ import {
   displayProjects,
   baseUrl,
   fetchApi,
-  getQueryParams
 } from "./modules/helperFunction.js";
-// import { fetchSingleArticle } from "./UI/blog/blog.js";
-const articleId = getQueryParams("id")
-console.log(articleId)
 
 const navBar = document.getElementById("nav_list") as HTMLUListElement;
 const menuBtn = document.getElementById("menu_btn") as HTMLImageElement;
@@ -53,10 +49,8 @@ function displayArticle(article: ArticleArr[]) {
       });
       const readMoreBtn = document.querySelectorAll(".link_to_blog")
       readMoreBtn.forEach(btn => btn.addEventListener("click", ()=> {
-        console.log(btn)
-        const blogId: any = btn?.getAttribute('data-id')
-        window.location.href =`./read_blog.html?id=${blogId}`
-        
+        const id = btn.getAttribute("data-id")
+        window.location.href = `/src/UI/blog/read_blog.html?id=${id}`
       }))
 }
 
