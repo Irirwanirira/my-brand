@@ -267,7 +267,7 @@ function likeArticle(articleId) {
             });
             const data = yield response.json();
             if (!response.ok) {
-                successMsgPop(data.message);
+                successMsgPop("Please login to like this article");
                 return;
             }
             successMsgPop(data.message);

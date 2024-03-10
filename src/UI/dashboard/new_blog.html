@@ -27,7 +27,7 @@
                 <h1>Write new Article</h1>
             </div>
             <div class="form_section">
-                <form class="form_to_fill" id="form" action="submit">
+                <form class="form_to_fill" id="form" action="POST" action="/upload" enctype="multipart/form-data" >
                     <label for="title">Title</label>
                     <input type="text" id="title" name="title">
                     <span id="titleError"></span>
@@ -35,12 +35,12 @@
                     <input type="text" name="photo" id="photo" placeholder="Paste image URL">
                     <span id="imageError"></span>
                     <label for="description"> Description</label>
-                    <textarea  style="background-color: #d9d9d9; border: solid 1px #c7c7c7;"" id="detail" name="detail"></textarea>
+                    <textarea  style="background-color: #d9d9d9; border: solid 1px #c7c7c7;" id="detail" name="detail"></textarea>
                     <span id="descriptionError"></span>
-                    <button class="articleBtn">Post</button>
+                    <button type="submit" class="articleBtn">Post</button>
                     <span id="successMsg"></span>
                 </form>
-            <div>
+            </div>
         </section>
     </section>
     <script type="module" src="../../../build/UI/dashboard/dashboard.js"></script>

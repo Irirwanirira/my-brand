@@ -192,11 +192,10 @@ function displayArticles(container) {
         console.error("Fetch Error:", error);
     });
 }
-// consider this part to be one of the part of updating article but which is still under develpment
 function fetchEditArticle(articleId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield fetch(`http://localhost:3000/brand/api/v1/article/${articleId}`, {
+            const response = yield fetch(`${baseUrl}/article/${articleId}`, {
                 method: "GET",
                 headers: {
                     authorization: `Bearer "${accessToken}"`,
@@ -204,27 +203,41 @@ function fetchEditArticle(articleId) {
                     Accept: "application/json",
                 },
             });
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
             const data = yield response.json();
             const oldArticle = data.data.article;
             const { title, image, description } = oldArticle;
-            const button = document.querySelector(".articleBtn");
-            const titleInput = document.querySelector("#title");
-            const imageInput = document.querySelector("#photo");
-            const descriptionInput = document.querySelector("#detail");
-            if (!response.ok) {
-                console.log(response);
-                throw new Error("Network response was not ok");
-            }
-            titleInput.value = title;
-            imageInput.value = image;
-            descriptionInput.value = description;
-            button.innerText = "Edit Article";
-            button.addEventListener("click", () => {
-                updateArticle(articleId, {
-                    title: titleInput.value,
-                    image: imageInput.value,
-                    description: descriptionInput.value,
-                });
+            const newHtml = document.querySelector(".form_section");
+            newHtml.innerHTML = "";
+            newHtml.innerHTML = `
+    <div class="form_section">
+    <form class="form_to_fill" id="form" class="form ">
+      <span id="successMsg"></span>
+        <label for="title">Edit title</label>
+        <input type="text" id="title" name="title" required>
+        <label for="photo">Edit photo</label>
+        <input type="text" id="photo" name="photo" required>
+        <label for="detail">Edit Description</label>
+        <textarea  style="background-color: #d9d9d9; border: solid 1px #c7c7c7;" id="detail" name="detail"></textarea>
+      
+      <button type="submit" class="submit_bt articleBtn">Update</button>
+    </form>
+    </div>
+    `;
+            const articleForm = document.querySelector("#form");
+            let newTitle = document.querySelector("#title");
+            const newImage = document.querySelector("#photo");
+            const newDescription = document.querySelector("#detail");
+            newTitle.value = title;
+            newImage.value = image;
+            newDescription.value = description;
+            articleForm === null || articleForm === void 0 ? void 0 : articleForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const data = { title: newTitle.value, image: newImage.value, description: newDescription.value };
+                updateArticle(articleId, data);
+                articleForm.reset();
             });
         }
         catch (error) {
@@ -232,14 +245,11 @@ function fetchEditArticle(articleId) {
         }
     });
 }
-// This part is under development
 function updateArticle(id, data) {
     return __awaiter(this, void 0, void 0, function* () {
-        const successMsg = document.querySelector("#successMsg");
-        console.log(successMsg);
         try {
             const response = yield fetch(`${baseUrl}/article/${id}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Authorization": `Bearer "${accessToken}"`,
                     "Content-Type": "application/json",
@@ -247,15 +257,10 @@ function updateArticle(id, data) {
                 },
                 body: JSON.stringify(data),
             });
-            const responseData = yield response.json();
-            successMsg.innerText = responseData.message;
-            console.log(responseData.message);
             if (!response.ok) {
-                console.log(response);
                 throw new Error("Network response was not ok");
             }
-            console.log("when response fails", responseData);
-            successMsgPop(responseData.message);
+            successMsgPop("Article updated successfully");
             window.location.href = "./blogs_page.html";
         }
         catch (error) {
@@ -263,7 +268,6 @@ function updateArticle(id, data) {
         }
     });
 }
-// until here 
 function softDeleteArticle(id) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

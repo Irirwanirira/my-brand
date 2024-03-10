@@ -235,10 +235,10 @@ function displayArticles(container: HTMLElement) {
       console.error("Fetch Error:", error);
     });
 }
-// consider this part to be one of the part of updating article but which is still under develpment
+
 async function fetchEditArticle(articleId: any) {
   try {
-    const response = await fetch(`http://localhost:3000/brand/api/v1/article/${articleId}`, {
+    const response = await fetch(`${baseUrl}/article/${articleId}`, {
       method: "GET",
       headers: {
         authorization: `Bearer "${accessToken}"`,
@@ -246,46 +246,54 @@ async function fetchEditArticle(articleId: any) {
         Accept: "application/json",
       },
     });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    
     const data = await response.json();
     const oldArticle = data.data.article;
     const {title, image , description} = oldArticle;
 
-    const button = document.querySelector(".articleBtn") as HTMLButtonElement;
+    const newHtml = document.querySelector(".form_section") as HTMLElement;
+    newHtml.innerHTML = "";
+    newHtml.innerHTML = `
+    <div class="form_section">
+    <form class="form_to_fill" id="form" class="form ">
+      <span id="successMsg"></span>
+        <label for="title">Edit title</label>
+        <input type="text" id="title" name="title" required>
+        <label for="photo">Edit photo</label>
+        <input type="text" id="photo" name="photo" required>
+        <label for="detail">Edit Description</label>
+        <textarea  style="background-color: #d9d9d9; border: solid 1px #c7c7c7;" id="detail" name="detail"></textarea>
+      
+      <button type="submit" class="submit_bt articleBtn">Update</button>
+    </form>
+    </div>
+    `;
+    const articleForm = document.querySelector("#form") as HTMLFormElement;
+    let newTitle = document.querySelector("#title") as HTMLInputElement;
+    const newImage = document.querySelector("#photo") as HTMLInputElement;
+    const newDescription = document.querySelector("#detail") as HTMLTextAreaElement;
+    newTitle.value = title;
+    newImage.value = image;
+    newDescription.value = description;
 
-    const titleInput = document.querySelector("#title") as HTMLInputElement;
-    const imageInput = document.querySelector("#photo") as HTMLInputElement;
-    const descriptionInput = document.querySelector(
-      "#detail"
-    ) as HTMLTextAreaElement;
-  
-    if (!response.ok) {
-      console.log(response);
-      throw new Error("Network response was not ok");
-    }
-    titleInput.value = title;
-    imageInput.value = image;
-    descriptionInput.value = description;
-    button.innerText = "Edit Article";
-    button.addEventListener("click", () => {
-      updateArticle(articleId, {
-        title: titleInput.value,
-        image: imageInput.value,
-        description: descriptionInput.value,
-      });
+    articleForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = { title: newTitle.value, image: newImage.value, description: newDescription.value };
+      updateArticle(articleId, data);
+      articleForm.reset();
     });
-
-  } catch (error) {
+  }catch (error) {
     console.error("Fetch Error:", error);
   }
 }
-// This part is under development
 async function updateArticle(id: any, data: any) {
-  const successMsg = document.querySelector("#successMsg") as HTMLSpanElement;
-  console.log(successMsg)
-
   try {
     const response = await fetch(`${baseUrl}/article/${id}`, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Authorization": `Bearer "${accessToken}"`,
         "Content-Type": "application/json",
@@ -293,23 +301,16 @@ async function updateArticle(id: any, data: any) {
       },
       body: JSON.stringify(data),
     });
-    const responseData = await response.json();
-    successMsg.innerText = responseData.message;
-    console.log(responseData.message)
 
     if (!response.ok) {
-      console.log(response);
       throw new Error("Network response was not ok");
     }
-    console.log("when response fails", responseData)
-    successMsgPop(responseData.message);
+    successMsgPop("Article updated successfully");
     window.location.href = "./blogs_page.html";
   } catch (error) {
     console.error("An error occurred:", error);
   }
-
 }
-// until here 
 
 async function softDeleteArticle(id: any) {
   try {
