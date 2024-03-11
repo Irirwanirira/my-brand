@@ -75,6 +75,9 @@ if (accessToken) {
      <li>
          <a class="list-group-item" href="./users_page.html"><i class="fa fa-users" aria-hidden="true"></i></i>&nbsp; Users</a>
      </li>
+     <li>
+          <a class="list-group-item" href="../../index.html">Back to Portfolio</a>
+      </li>
      </ul>
      `;
     function displayWelcome() {
